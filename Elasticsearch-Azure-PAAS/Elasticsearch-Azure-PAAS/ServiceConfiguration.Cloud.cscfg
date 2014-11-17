@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+  <Role name="ElasticsearchRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnection" value="UseDevelopmentStorage=true" />
+      <Setting name="JavaInstallerName" value="jdk-8u25-windows-x64.exe" />
+      <Setting name="JavaDownloadURL" value="http://127.0.0.1:10000/installers/jdk-8u25-windows-x64.exe" />
+      <Setting name="ElasticsearchZip" value="elasticsearch-1.4.0.zip" />
+      <Setting name="ElasticsearchDownloadURL" value="http://127.0.0.1:10000/installers/elasticsearch-1.4.0.zip" />
+      <Setting name="ShareName" value="elasticdata" />
+      <Setting name="ShareDrive" value="P:" />
+      <Setting name="EndpointName" value="elasticsearch" />
+    </ConfigurationSettings>
+  </Role>
 </ServiceConfiguration>

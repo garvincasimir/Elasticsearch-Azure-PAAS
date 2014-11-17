@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Elasticsearch-Azure-PAAS", "Elasticsearch-Azure-PAAS\Elasticsearch-Azure-PAAS.ccproj", "{47E60009-C1CA-45B5-809A-49B995148AE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticsearchRole", "ElasticsearchRole\ElasticsearchRole.csproj", "{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Common", "Worker.Common\Worker.Common.csproj", "{85024067-4A95-4A39-837E-3A798309FFA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{47E60009-C1CA-45B5-809A-49B995148AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47E60009-C1CA-45B5-809A-49B995148AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47E60009-C1CA-45B5-809A-49B995148AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85024067-4A95-4A39-837E-3A798309FFA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85024067-4A95-4A39-837E-3A798309FFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85024067-4A95-4A39-837E-3A798309FFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85024067-4A95-4A39-837E-3A798309FFA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
