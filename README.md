@@ -1,13 +1,26 @@
 Elasticsearch-Azure-PAAS
 ========================
 
-This is a Visual Studio project for creating an Elasticsearch cluster on Microsoft Azure using worker roles. It is designed to work with azure files service for data and snapshots. The only difference between running this project in the Azure Emulator and an Azure Cloud Service is, the emulator does not support mounting Azure File Service shares as drives is. For this reason, the emulator stores its data in a resource folder.
+This is a Visual Studio project for creating an Elasticsearch cluster on Microsoft Azure using worker roles. 
+![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
 
-In the original proof of concept, the java and elasticsearch installers were included in the project and setup using start tasks. In this solution, there are no startup tasks. The entire configuration is managed in code. This decision was made because a startup task waiting for a file to download could cause the role to appear unresponsive. Also, I have no clean way of knowing when a background startup task is complete.
+It is designed to work with azure files service for data and snapshots. The only difference between running this project in the Azure Emulator and an Azure Cloud Service is, the emulator does not support mounting Azure File Service shares as drives is. For this reason, the emulator stores its data in a resource folder.
+
+Why no startup tasks?
+----------------------
+In the original proof of concept, the java and elasticsearch installers were included in the project and therefore the logical choice for installing them was startup tasks. In this solution, there are no startup tasks because I am leaning in the direction of downloading all required artifacts after the role has started. Here are my reasons for this change in thinking: 
+
+1. This will allow very controlled updates and changes without re-uploading the cloud project. 
+2. Converting the initialization logic to managed code also has the added benefit of stepping through it with a debugger. We can now fully capitalize on the remote debugging capabilites of the Azure framework.
+3. The code can now be fully covered with automated tests.  
+4. Long running startup tasks such as installers can cause a role to appear unresponsive.
+5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent of each other to run concurrently while waiting to run tasks that are dependent on them.
+6. Doing everything in managed code allows for a lot more control and provides opportunities for customization and extensibility.
+7. Downloading binaries will not take very long if they are located in a storage account so I am not too concerned about that anymore.
 
 
 Running the project
-========================
+-------------------
 I tried my best to allow someone to clone this project and run it without doing any configuration. Unfortunately, there are a couple config steps before you can run it either in the Azure Emulator or in an Azure Cloud Service. The many configuration values are needed for the role to download and install java, then download, configure and run Elasticsearch.
 
 1. Download the java jdk installer and copy it to a url accessible to the role or copy it to the storage account associated with the role. 
