@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
   <Role name="ElasticsearchRole">
-    <Instances count="1" />
+    <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="StorageConnection" value="UseDevelopmentStorage=true" />
       <Setting name="JavaInstallerName" value="jdk-8u25-windows-x64.exe" />

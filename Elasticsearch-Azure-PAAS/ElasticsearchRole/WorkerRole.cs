@@ -30,10 +30,13 @@ namespace ElasticsearchRole
             try
             {
                 var configTasks = new Task[] { javaManager.EnsureConfigured(), elasticsearchManager.EnsureConfigured() };
-                Trace.TraceInformation("Attempting to configure node: ", nodeName);
+                Trace.TraceInformation("Attempting to configure node: {0}", nodeName);
                 Task.WaitAll(configTasks, cancellationTokenSource.Token);
 
-                Trace.TraceInformation("Attempting to start elasticsearch as node: ", nodeName);
+                //Start discovery helper (non blocking)
+                bridge.StartService();
+
+                Trace.TraceInformation("Attempting to start elasticsearch as node: {0} ", nodeName);
                 elasticsearchManager.StartAndBlock();
             }
             catch (Exception e)

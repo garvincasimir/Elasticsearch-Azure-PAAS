@@ -18,10 +18,13 @@ namespace Worker.Common
         private readonly string _endpointName;
         public PipesRuntimeBridge(string endpointName)
         {
+            _endpointName = endpointName;
+        }
+
+        public void StartService()
+        {
             var server = new NamedPipeServerStream(_pipename,
                                 PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.WriteThrough);
-            _endpointName = endpointName;
-
             BeginWaitForConnection(server);
         }
 
