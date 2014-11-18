@@ -3,6 +3,8 @@ Elasticsearch-Azure-PAAS
 
 This is a Visual Studio project for creating an Elasticsearch cluster on Microsoft Azure using worker roles. It is designed to work with azure files service for data and snapshots. The only difference between running this project in the Azure Emulator and an Azure Cloud Service is, the emulator does not support mounting Azure File Service shares as drives is. For this reason, the emulator stores its data in a resource folder.
 
+In the original proof of concept, the java and elasticsearch installers were included in the project and setup using start tasks. In this solution, there are no startup tasks. The entire configuration is managed in code. This decision was made because a startup task waiting for a file to download could cause the role to appear unresponsive. Also, I have no clean way of knowing when a background startup task is complete.
+
 
 Running the project
 ========================
