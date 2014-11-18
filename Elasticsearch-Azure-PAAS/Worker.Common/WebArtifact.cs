@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Worker.Common
 {
+    //TODO: Support for file signature verification
     public  class WebArtifact
     {
         protected string _SourceURL;
@@ -31,7 +33,6 @@ namespace Worker.Common
         public virtual void Download(string filePath,bool useTemp=true)
         {
             var client = new WebClient();
-           
 
             string downloadDestination = useTemp ? Path.GetTempFileName() : filePath;
 
@@ -39,8 +40,10 @@ namespace Worker.Common
 
             if (useTemp)
             {
-                File.Copy(downloadDestination, filePath);
+                File.Copy(downloadDestination, filePath,true);
             }
+
+            Trace.TraceInformation("{0} download complete", filePath);
 
 
             

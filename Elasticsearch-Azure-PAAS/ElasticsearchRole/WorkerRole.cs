@@ -73,14 +73,15 @@ namespace ElasticsearchRole
             string javaDownloadType = CloudConfigurationManager.GetSetting("JavaDownloadType");
             WebArtifact javaArtifact;
 
-            if (string.IsNullOrWhiteSpace(javaDownloadType) || javaDownloadType == "web")
-            {
-                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller);
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(javaDownloadType) && javaDownloadType == "storage")
             {
                 javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller, storage);
             }
+            else
+            {
+                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller);
+            }
+
             javaManager = new JavaManager(javaArtifact, archiveRoot, logRoot); //Java installer
             
             #endregion
@@ -90,13 +91,13 @@ namespace ElasticsearchRole
             string elasticsearchDownloadType = CloudConfigurationManager.GetSetting("ElasticsearchDownloadType");
             WebArtifact elasticsearchArtifact;
 
-            if (string.IsNullOrWhiteSpace(elasticsearchDownloadType) || elasticsearchDownloadType == "web")
+            if (!string.IsNullOrWhiteSpace(elasticsearchDownloadType) && elasticsearchDownloadType == "storage")
             {
-                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);
+                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, storage);
             }
             else
             {
-                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, storage);
+                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);  
             }
 
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper
@@ -146,8 +147,15 @@ namespace ElasticsearchRole
             Trace.TraceInformation("ElasticsearchRole is stopping");
 
             cancellationTokenSource.Cancel();
-            
-            elasticsearchManager.Stop();
+
+            try
+            {
+                elasticsearchManager.Stop();
+            }
+            catch(Exception e)
+            {
+                Trace.TraceError(e.Message);
+            }
 
             runCompleteEvent.WaitOne();
 

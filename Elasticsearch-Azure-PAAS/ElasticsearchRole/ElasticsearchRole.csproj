@@ -81,10 +81,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Config\elasticsearch.yml" />
-    <None Include="Config\logging.yml" />
+    <None Include="Config\elasticsearch.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\logging.yml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
-    <None Include="Plugins\elasticsearch-azureruntime-0.0.1-SNAPSHOT.zip" />
+    <None Include="Plugins\elasticsearch-azureruntime-0.0.1-SNAPSHOT.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

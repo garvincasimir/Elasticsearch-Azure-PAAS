@@ -13,18 +13,21 @@ namespace Worker.Common
 {
     public class ElasticsearchManager : SoftwareManager
     {
-        public const string ELASTICSEARCH_CONFIG_FILE = "elasticsearch.yaml";
-        public const string ELASTICSEARCH_LOG_CONFIG_FILE = "logging.yaml";
+        public const string ELASTICSEARCH_CONFIG_FILE = "elasticsearch.yml";
+        public const string ELASTICSEARCH_LOG_CONFIG_FILE = "logging.yml";
 
         protected string _elasticRoot;
         protected string _pluginRoot;
+        protected string _installRoot;
         protected ElasticsearchRuntimeConfig _config;
         protected Process _process = null;
-        public ElasticsearchManager(ElasticsearchRuntimeConfig _config, WebArtifact artifact, string archiveRoot, string elasticRoot, string logRoot)
+        public ElasticsearchManager(ElasticsearchRuntimeConfig config, WebArtifact artifact, string archiveRoot, string installRoot, string logRoot)
             : base(artifact, archiveRoot, logRoot)
         {
-            _elasticRoot = elasticRoot;
+            _installRoot = installRoot;
+            _elasticRoot = Path.Combine(installRoot, Path.GetFileNameWithoutExtension(artifact.Name));
             _pluginRoot = Path.Combine(_elasticRoot, "plugins");
+            _config = config;
         }
 
         public override Task EnsureConfigured()
@@ -61,18 +64,21 @@ namespace Worker.Common
             Trace.TraceInformation("Re-creating elasticshearch root");
             var dir = new DirectoryInfo(_elasticRoot);
 
-            foreach (var file in dir.EnumerateFiles())
+            if (dir.Exists)
             {
-                file.Delete();
+                foreach (var file in dir.EnumerateFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (var folder in dir.EnumerateDirectories())
+                {
+                    folder.Delete();
+                }
             }
 
-            foreach (var folder in dir.EnumerateDirectories())
-            {
-                folder.Delete();
-            }
-
-            Trace.TraceInformation("Extracting elasticsearch");
-            ZipFile.ExtractToDirectory(_binaryArchive, _elasticRoot);
+            Trace.TraceInformation("Extracting elasticsearch to {0}", _elasticRoot);
+            ZipFile.ExtractToDirectory(_binaryArchive, _installRoot);
         }
 
         protected virtual void ConfigureElasticsearch()
@@ -119,8 +125,8 @@ namespace Worker.Common
                 rootOutputNode.Add(new YamlScalarNode("node.name"), new YamlScalarNode(_config.NodeName));
                 rootOutputNode.Add(new YamlScalarNode("cloud.azureruntime.bridge"), new YamlScalarNode(_config.BridgePipeName));
 
-                Trace.WriteLine("Saving Config File");
                 yamlOutput.Save(output);
+                Trace.TraceInformation("Saved elasticsearch config file {0}", configFile);
 
             }
 
@@ -138,32 +144,45 @@ namespace Worker.Common
 	            var pluginPath = Path.Combine(_pluginRoot,pluginFileName);
 
                 ZipFile.ExtractToDirectory(file, pluginPath);
+                Trace.TraceInformation("Extracted plugin {0}", pluginFileName);
             }
         }
 
         protected virtual void ConfigureElastisearchLogging()
         {
             string configFile = Path.Combine(_elasticRoot, "Config", ELASTICSEARCH_LOG_CONFIG_FILE);
-            File.Copy(_config.TemplateLogConfigFile, configFile);
+            File.Copy(_config.TemplateLogConfigFile, configFile,true);
+            Trace.TraceInformation("Created logging config {0}", configFile);
         }
 
         public virtual void StartAndBlock()
         {
+            string startupScript = Path.Combine(_elasticRoot, "bin", "elasticsearch.bat");
             _process = new Process();
             _process.StartInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(_elasticRoot, "bin", "elasticsearch.bat")
+                FileName = startupScript
             };
+
+            Trace.TraceInformation("Starting Elasticsearch with script {0}",startupScript);
             _process.Start();
             _process.WaitForExit();
         }
 
         public virtual void Stop()
         {
-            if (_process!= null && !_process.HasExited)
+            if (_process != null)
             {
-                _process.CloseMainWindow();
+                return;
             }
+
+            if (_process.HasExited)
+            {
+                return;
+            }
+           
+            _process.CloseMainWindow();
+            
         }
     }
 }
