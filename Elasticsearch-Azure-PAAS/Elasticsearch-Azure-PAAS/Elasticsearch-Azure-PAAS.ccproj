@@ -12,6 +12,7 @@
     <AssemblyName>Elasticsearch_Azure_PAAS</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
     <Name>Elasticsearch-Azure-PAAS</Name>
+    <UseWebProjectPorts>False</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

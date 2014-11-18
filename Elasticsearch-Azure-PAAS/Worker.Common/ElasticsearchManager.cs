@@ -15,17 +15,13 @@ namespace Worker.Common
     {
         public const string ELASTICSEARCH_CONFIG_FILE = "elasticsearch.yaml";
         public const string ELASTICSEARCH_LOG_CONFIG_FILE = "logging.yaml";
-        protected string _binaryArchive;
-        protected Uri _binaryDownloadURL;
-        protected string _setupRoot;
-        protected string _archiveRoot;
-        protected string _logRoot;
+
         protected string _elasticRoot;
         protected string _pluginRoot;
         protected ElasticsearchRuntimeConfig _config;
         protected Process _process = null;
-        public ElasticsearchManager(ElasticsearchRuntimeConfig _config, string binary, string binaryDownloadURL, string archiveRoot, string elasticRoot, string logRoot)
-            : base(binary, binaryDownloadURL, archiveRoot, logRoot)
+        public ElasticsearchManager(ElasticsearchRuntimeConfig _config, WebArtifact artifact, string archiveRoot, string elasticRoot, string logRoot)
+            : base(artifact, archiveRoot, logRoot)
         {
             _elasticRoot = elasticRoot;
             _pluginRoot = Path.Combine(_elasticRoot, "plugins");

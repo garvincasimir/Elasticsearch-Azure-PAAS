@@ -11,17 +11,17 @@ namespace Worker.Common
 {
     public abstract class SoftwareManager
     {
-        protected string _binaryArchive;
-        protected Uri _binaryDownloadURL;
+        protected WebArtifact _artifact;
         protected string _archiveRoot;
         protected string _logRoot;
+        protected string _binaryArchive;
 
-        public SoftwareManager(string binary, string binaryDownloadURL, string archiveRoot, string logRoot)
+        public SoftwareManager(WebArtifact artifact, string archiveRoot, string logRoot)
         {
-            _binaryArchive = Path.Combine(archiveRoot, binary);
-            _binaryDownloadURL = new Uri(binaryDownloadURL);
             _archiveRoot = archiveRoot;
             _logRoot = logRoot;
+            _binaryArchive = Path.Combine(archiveRoot, artifact.Name);
+            _artifact = artifact;
         }
 
         public abstract Task EnsureConfigured();
@@ -37,20 +37,7 @@ namespace Worker.Common
             if (!BinaryExists())
             {
                 Trace.TraceInformation("{0} not found. Downloading.....",_binaryArchive);
-
-                var client = new WebClient();
-
-                //Download to temporary file so we have less cleanup issues if download fails or operation is cancelled
-                var tempBinaryArchive = Path.GetTempFileName();
-
-                client.DownloadFile(_binaryDownloadURL, tempBinaryArchive);
-
-                Trace.TraceInformation("Download from {0} complete.....",_binaryDownloadURL);
-
-                File.Copy(tempBinaryArchive, _binaryArchive);
-
-                Trace.TraceInformation("{0} Created",_binaryArchive);
-
+                _artifact.Download(_archiveRoot);
             }
         }
     }

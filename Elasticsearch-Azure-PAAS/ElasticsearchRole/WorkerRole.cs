@@ -51,24 +51,54 @@ namespace ElasticsearchRole
             // Not sure what this should be. Hopefully storage over smb doesn't open a million connections
             ServicePointManager.DefaultConnectionLimit = 12;
 
+            #region Load Config Settings
             nodeName = RoleEnvironment.CurrentRoleInstance.Id;
-
             string javaInstaller = CloudConfigurationManager.GetSetting("JavaInstallerName");
             string javaDownloadURL = CloudConfigurationManager.GetSetting("JavaDownloadURL");
             string elasticsearchZip = CloudConfigurationManager.GetSetting("ElasticsearchZip");
             string elasticsearchDownloadURL = CloudConfigurationManager.GetSetting("ElasticsearchDownloadURL");
-            string shareName =  CloudConfigurationManager.GetSetting("ShareName"); //root path for es data
-            string shareDrive =  CloudConfigurationManager.GetSetting("ShareDrive"); //Drive letter to map azure share
-            string endpointName =  CloudConfigurationManager.GetSetting("EndpointName"); 
+            string shareName = CloudConfigurationManager.GetSetting("ShareName"); //root path for es data
+            string shareDrive = CloudConfigurationManager.GetSetting("ShareDrive"); //Drive letter to map azure share
+            string endpointName = CloudConfigurationManager.GetSetting("EndpointName");
             string archiveRoot = RoleEnvironment.GetLocalResource("ArchiveRoot").RootPath;
-            string logRoot =  RoleEnvironment.GetLocalResource("LogRoot").RootPath;
+            string logRoot = RoleEnvironment.GetLocalResource("LogRoot").RootPath;
             string elasticRoot = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath;
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
-            string tempPath = Path.GetTempPath();
+            string tempPath = Path.GetTempPath(); 
+            #endregion
 
+            #region Configure Java  manager
+            //Are we downloading java from storage or regular url?
+            string javaDownloadType = CloudConfigurationManager.GetSetting("JavaDownloadType");
+            WebArtifact javaArtifact;
 
-            javaManager = new JavaManager(javaInstaller, javaDownloadURL, archiveRoot, logRoot); //Java installer
+            if (string.IsNullOrWhiteSpace(javaDownloadType) || javaDownloadType == "web")
+            {
+                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller);
+            }
+            else
+            {
+                javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller, storage);
+            }
+            javaManager = new JavaManager(javaArtifact, archiveRoot, logRoot); //Java installer
+            
+            #endregion
+
+            #region Configure Elasticsearch manager
+            //Are we downloading java from storage or regular url?
+            string elasticsearchDownloadType = CloudConfigurationManager.GetSetting("ElasticsearchDownloadType");
+            WebArtifact elasticsearchArtifact;
+
+            if (string.IsNullOrWhiteSpace(elasticsearchDownloadType) || elasticsearchDownloadType == "web")
+            {
+                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);
+            }
+            else
+            {
+                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, storage);
+            }
+
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper
 
             //Azure file is not available in emulator
@@ -101,7 +131,8 @@ namespace ElasticsearchRole
                 
             };
 
-            elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchZip, elasticsearchDownloadURL, archiveRoot, elasticRoot, logRoot);
+            elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchArtifact, archiveRoot, elasticRoot, logRoot);
+            #endregion
 
             bool result = base.OnStart();
 

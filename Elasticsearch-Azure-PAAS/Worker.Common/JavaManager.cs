@@ -17,8 +17,8 @@ namespace Worker.Common
         public const string JAVA_REGISTRY_PATH = "HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft\\Java Runtime Environment";
         public const string INSTALL_LOG_FILE = "jdk.txt";
 
-        public JavaManager(string binary, string binaryDownloadURL, string archiveRoot, string  logRoot )
-            :base(binary,binaryDownloadURL,archiveRoot,logRoot)
+        public JavaManager(WebArtifact artifact, string archiveRoot, string  logRoot )
+            :base(artifact,archiveRoot,logRoot)
         {
            
         }
