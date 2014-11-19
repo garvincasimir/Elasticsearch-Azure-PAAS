@@ -4,7 +4,9 @@ Elasticsearch-Azure-PAAS
 This is a Visual Studio project for creating an Elasticsearch cluster on Microsoft Azure using worker roles. 
 ![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
 
-It is designed to work with azure files service for data and snapshots. The only difference between running this project in the Azure Emulator and an Azure Cloud Service is, the emulator does not support mounting Azure File Service shares as drives is. For this reason, the emulator stores its data in a resource folder.
+Do I need an Azure Account to try this?
+---------------------------------------
+No, it runs in the full Azure Emulator. The project is designed to work with azure files service for data and snapshots but falls back to a resource folder in the Azure Emulator. Other than that, there is no significant difference between running this project on the Azure Emulator and publishing it to Azure. 
 
 Why no startup tasks?
 ----------------------
