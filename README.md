@@ -42,4 +42,4 @@ I tried my best to allow someone to clone this project and run it without doing 
 12. To check if discovery is working, open the following url in your browser or fiddler: http://localhost:9200/_nodes
   13. When Elasticsearch has properly initialized, it should show two nodes.  
 
-![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running.png "Running in Emulator with Fiddler for test")
+![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running1.png "Running in Emulator with Fiddler for test")
