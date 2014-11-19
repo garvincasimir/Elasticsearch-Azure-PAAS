@@ -25,7 +25,9 @@ Running the project
 -------------------
 I tried my best to allow someone to clone this project and run it without doing any configuration. Unfortunately, there are a couple config steps before you can run it either in the Azure Emulator or in an Azure Cloud Service. The many configuration values are needed for the role to download and install java, then download, configure and run Elasticsearch. The default download location for Elasticsearch is their main download link so you don't need to configure that if you are just testing. For Java on the other hand, I could not find a link that didn't require me to visit a page and accept a license. This is also the case with the OpenJDK distribution. So the quickest way to get this project going is to upload the java jdk installer (jdk-8u25-windows-x64.exe) to the development storage account into a conainter called "installers" and run the cloud project.
 
-1. Download the java jdk installer and copy it to a url accessible to the role or copy it to the storage account associated with the role. 
+1. Clone the project
+2. Restore the Nuget packages
+2. Download the java jdk installer and copy it to a url accessible to the role or copy it to the storage account associated with the role. 
   2. If you copied the installer to a storage account 
     3. Copy the full storage url to the role setting "JavaDownloadURL" (default:http://127.0.0.1:10000/devstoreaccount1/installers/jdk-8u25-windows-x64.exe)
     4. Change the role setting "JavaDownloadType" to "storage" (default:storage)
