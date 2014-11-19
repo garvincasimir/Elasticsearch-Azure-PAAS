@@ -1,8 +1,13 @@
 Elasticsearch-Azure-PAAS
 ========================
 
-This is a Visual Studio project for creating an Elasticsearch cluster on Microsoft Azure using worker roles. 
+This is a Visual Studio project for creating an [Elasticsearch](http://http://www.elasticsearch.org) cluster on Microsoft Azure using worker roles. 
 ![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
+
+Who is this for?
+---------------------------
+This is for people who are interested in the idea of running elasticsearch in Azure but don't want to deal with the complexities of creating and managing virtual machines. This is also an opportunity to test Elasticsearch in a simulated distributed environment. You can run it, create a couple indexes, add more instances, mess with the Elasticsearch configuration etc. 
+
 
 Do I need an Azure Account to try this?
 ---------------------------------------
