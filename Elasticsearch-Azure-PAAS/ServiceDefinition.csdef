@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
-  <WorkerRole name="ElasticsearchRole" vmsize="Small">
+  <WorkerRole name="ElasticsearchRole" vmsize="Small" enableNativeCodeExecution="true">
+    <Runtime executionContext="elevated">
+    </Runtime>
     <Endpoints>
       <InternalEndpoint name="elasticsearch" protocol="tcp" port="9300" />
+      <InputEndpoint name="http" protocol="http" port="80" localPort="9200" />
     </Endpoints>
     <LocalResources>
-      <LocalStorage name="ArchiveRoot" sizeInMB="100" cleanOnRoleRecycle="false" />
+      <LocalStorage name="ArchiveRoot" sizeInMB="1000" cleanOnRoleRecycle="false" />
       <LocalStorage name="LogRoot" sizeInMB="1000" cleanOnRoleRecycle="false" />
       <LocalStorage name="ElasticRoot" sizeInMB="1000" cleanOnRoleRecycle="true" />
       <LocalStorage name="EmulatorDataRoot" sizeInMB="10000" cleanOnRoleRecycle="false" />
@@ -20,6 +23,13 @@
       <Setting name="ShareDrive" />
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
+      <Setting name="ElasticsearchDownloadType" />
     </ConfigurationSettings>
+    <Imports>
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
+    <Certificates>
+    </Certificates>
   </WorkerRole>
 </ServiceDefinition>
