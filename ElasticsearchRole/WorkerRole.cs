@@ -24,7 +24,7 @@ namespace ElasticsearchRole
         private JavaManager javaManager;
         private string nodeName;
         private PipesRuntimeBridge bridge;
-       
+
         public override void Run()
         {
             try
@@ -68,7 +68,10 @@ namespace ElasticsearchRole
             string elasticRoot = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath;
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
-            string tempPath = Path.GetTempPath(); 
+            string tempPath = Path.GetTempPath();
+
+            if (!roleRoot.EndsWith(@"\"))
+                roleRoot = roleRoot + @"\";
             #endregion
 
             #region Configure Java  manager
@@ -86,7 +89,7 @@ namespace ElasticsearchRole
             }
 
             javaManager = new JavaManager(javaArtifact, archiveRoot, logRoot); //Java installer
-            
+
             #endregion
 
             #region Configure Elasticsearch manager
@@ -100,7 +103,7 @@ namespace ElasticsearchRole
             }
             else
             {
-                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);  
+                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);
             }
 
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper
@@ -124,15 +127,15 @@ namespace ElasticsearchRole
 
             var runtimeConfig = new ElasticsearchRuntimeConfig
             {
-                DataPath= shareDrive,
+                DataPath = shareDrive,
                 LogPath = logRoot,
                 TempPath = tempPath,
                 NodeName = nodeName,
                 BridgePipeName = bridge.PipeName,
-                PackagePluginPath = Path.Combine(roleRoot,"approot","plugins"),
-                TemplateConfigFile = Path.Combine(roleRoot,"approot","config",ElasticsearchManager.ELASTICSEARCH_CONFIG_FILE),
-                TemplateLogConfigFile = Path.Combine(roleRoot,"approot","config",ElasticsearchManager.ELASTICSEARCH_LOG_CONFIG_FILE)
-                
+                PackagePluginPath = Path.Combine(roleRoot, "approot", "plugins"),
+                TemplateConfigFile = Path.Combine(roleRoot, "approot", "config", ElasticsearchManager.ELASTICSEARCH_CONFIG_FILE),
+                TemplateLogConfigFile = Path.Combine(roleRoot, "approot", "config", ElasticsearchManager.ELASTICSEARCH_LOG_CONFIG_FILE)
+
             };
 
             elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchArtifact, archiveRoot, elasticRoot, logRoot);
@@ -155,7 +158,7 @@ namespace ElasticsearchRole
             {
                 elasticsearchManager.Stop();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Trace.TraceError(e.Message);
             }
