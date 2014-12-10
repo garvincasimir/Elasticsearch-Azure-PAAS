@@ -21,7 +21,7 @@ In the original proof of concept, the java and elasticsearch installers were inc
 2. Converting the initialization logic to managed code also has the added benefit of stepping through it with a debugger. We can now fully capitalize on the remote debugging capabilites of the Azure framework.
 3. The code can now be fully covered with automated tests.  
 4. Long running startup tasks such as installers can cause a role to appear unresponsive.
-5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent of each other to run concurrently while waiting to run tasks that are dependent on them.
+5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent on each other to run concurrently while waiting to run tasks that are dependent on them.
 6. Doing everything in managed code allows for a lot more control and provides opportunities for customization and extensibility.
 7. Downloading binaries will not take very long if they are located in a storage account so I am not too concerned about that anymore.
 
