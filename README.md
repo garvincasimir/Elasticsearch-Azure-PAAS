@@ -51,7 +51,7 @@ I tried my best to allow someone to clone this project and run it without doing 
 
 The Discovery Plugin
 -----------------------
-The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the name pipe it depends only available when using ProgramEntryPoint. You can view the code in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning up to do. 
+The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning to be done. 
 
 Other Useful Plugins
 -----------------------
