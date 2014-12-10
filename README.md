@@ -48,3 +48,11 @@ I tried my best to allow someone to clone this project and run it without doing 
   13. When Elasticsearch has properly initialized, it should show two nodes.  
 
 ![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running1.png "Running in Emulator with Fiddler for test")
+
+The Discovery Plugin
+-----------------------
+THe discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk to Runtime api but the name pipe it depends only available when using ProgramEntryPoint. You can view the code in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning up to do. 
+
+Other Useful Plugins
+-----------------------
+Although I want to keep this project as generic as possible, if anyone has suggestions for plugins that everyone should definitely be using let me know.
