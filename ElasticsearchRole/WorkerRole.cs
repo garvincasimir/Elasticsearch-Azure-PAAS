@@ -100,7 +100,7 @@ namespace ElasticsearchRole
             #endregion
 
             #region Configure Elasticsearch manager
-            //Are we downloading java from storage or regular url?
+            //Are we downloading elasticsearch from storage or regular url?
             string elasticsearchDownloadType = CloudConfigurationManager.GetSetting("ElasticsearchDownloadType");
             WebArtifact elasticsearchArtifact;
 
