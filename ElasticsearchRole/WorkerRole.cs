@@ -68,6 +68,16 @@ namespace ElasticsearchRole
             string elasticRoot = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath;
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
+            
+            /**
+             * Issue #1.  In azure the role root is just a drive letter. Unfortunately, System.IO doesn't add needed slash 
+             *  so Path.Combine("E:","path\to\file") yields E:path\to\file
+             *  Still hoping there is a .net api that I an use to avoid the code below.
+             */
+            if (!roleRoot.EndsWith(@"\"))
+            {
+                roleRoot +=   @"\";
+            }
             string tempPath = Path.GetTempPath(); 
             #endregion
 
