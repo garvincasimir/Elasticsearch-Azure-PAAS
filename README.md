@@ -21,7 +21,7 @@ In the original proof of concept, the java and elasticsearch installers were inc
 2. Converting the initialization logic to managed code also has the added benefit of stepping through it with a debugger. We can now fully capitalize on the remote debugging capabilites of the Azure framework.
 3. The code can now be fully covered with automated tests.  
 4. Long running startup tasks such as installers can cause a role to appear unresponsive.
-5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent of each other to run concurrently while waiting to run tasks that are dependent on them.
+5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent on each other to run concurrently while waiting to run tasks that are dependent on them.
 6. Doing everything in managed code allows for a lot more control and provides opportunities for customization and extensibility.
 7. Downloading binaries will not take very long if they are located in a storage account so I am not too concerned about that anymore.
 
@@ -48,3 +48,11 @@ I tried my best to allow someone to clone this project and run it without doing 
   13. When Elasticsearch has properly initialized, it should show two nodes.  
 
 ![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running1.png "Running in Emulator with Fiddler for test")
+
+The Discovery Plugin
+-----------------------
+The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning to be done. 
+
+Other Useful Plugins
+-----------------------
+Although I want to keep this project as generic as possible, if anyone has suggestions for plugins that everyone should definitely be using let me know.
