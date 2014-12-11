@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Compression;
 using YamlDotNet.RepresentationModel;
+using System.Threading;
+using Microsoft.Win32.SafeHandles;
 
 namespace Worker.Common
 {
@@ -155,18 +157,38 @@ namespace Worker.Common
             Trace.TraceInformation("Created logging config {0}", configFile);
         }
 
-        public virtual void StartAndBlock()
+        public virtual void StartAndBlock(CancellationToken token)
         {
-            string startupScript = Path.Combine(_elasticRoot, "bin", "elasticsearch.bat");
-            _process = new Process();
-            _process.StartInfo = new ProcessStartInfo
+            if (!token.IsCancellationRequested)
             {
-                FileName = startupScript
-            };
+                string startupScript = Path.Combine(_elasticRoot, "bin", "elasticsearch.bat");
+                _process = new Process();
+                _process.StartInfo = new ProcessStartInfo
+                {
+                    FileName = startupScript
+                };
 
-            Trace.TraceInformation("Starting Elasticsearch with script {0}",startupScript);
-            _process.Start();
-            _process.WaitForExit();
+                Trace.TraceInformation("Starting Elasticsearch with script {0}", startupScript);
+
+                _process.Start();
+            }
+                
+
+            using(var waitHandle = new SafeWaitHandle(_process.Handle, false))
+            using (var processEnded = new ManualResetEvent(false))
+            {
+                processEnded.SafeWaitHandle = waitHandle;
+ 
+                int index = WaitHandle.WaitAny(new[] { processEnded, token.WaitHandle });
+                
+                //If the signal came from the caller cancellation token close the window
+                if (index == 1)
+                {
+                    Stop();
+                }
+            }
+
+            
         }
 
         public virtual void Stop()

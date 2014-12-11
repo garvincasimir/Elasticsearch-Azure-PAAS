@@ -37,7 +37,7 @@ namespace ElasticsearchRole
                 bridge.StartService();
 
                 Trace.TraceInformation("Attempting to start elasticsearch as node: {0} ", nodeName);
-                elasticsearchManager.StartAndBlock();
+                elasticsearchManager.StartAndBlock(cancellationTokenSource.Token);
             }
             catch (Exception e)
             {
