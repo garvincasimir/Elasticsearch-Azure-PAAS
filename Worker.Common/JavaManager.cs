@@ -66,6 +66,7 @@ namespace Worker.Common
                 {
                     Arguments = " /s /L " + installLog,
                     RedirectStandardError = true,
+                    UseShellExecute = false,
                     Verb = "runas"
                 };
 
