@@ -12,7 +12,7 @@
         <WindowsEventLog scheduledTransferPeriod="PT1M" >
           <DataSource name="Application!*" />
         </WindowsEventLog>
-        <CrashDumps containerName="wad-crashdumps" dumpType="Mini">
+        <CrashDumps containerName="wad-crashdumps" dumpType="Full">
           <CrashDumpConfiguration processName="WaIISHost.exe"/>
           <CrashDumpConfiguration processName="WaWorkerHost.exe"/>
           <CrashDumpConfiguration processName="w3wp.exe"/>
