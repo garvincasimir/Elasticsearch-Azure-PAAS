@@ -64,12 +64,21 @@ namespace Worker.Common
                 var installLog = Path.Combine(_logRoot, INSTALL_LOG_FILE);
                 var pi = new ProcessStartInfo(_binaryArchive)
                 {
-                    Arguments = " /s /L " + installLog
+                    Arguments = " /s /L " + installLog,
+                    UseShellExecute = true,
+                    RedirectStandardError = true,
+                    Verb = "runas"
                 };
 
                 Trace.TraceInformation("Java not installed. Starting installer");
                 var installer = Process.Start(pi);
+                var error = installer.StandardError.ReadToEnd();
                 installer.WaitForExit();
+
+                if (installer.ExitCode > 0)
+                {
+                    throw new Exception("Java installation failed: " + error);
+                }
 
                 Trace.TraceInformation("Java installer complete");
             }
