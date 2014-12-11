@@ -24,14 +24,26 @@ namespace ElasticsearchRole
         private JavaManager javaManager;
         private string nodeName;
         private PipesRuntimeBridge bridge;
-       
+
+        private volatile bool onStopCalled = false;
         public override void Run()
         {
             try
             {
-                var configTasks = new Task[] { javaManager.EnsureConfigured(), elasticsearchManager.EnsureConfigured() };
-                Trace.TraceInformation("Attempting to configure node: {0}", nodeName);
-                Task.WaitAll(configTasks, cancellationTokenSource.Token);
+                if (onStopCalled)
+                {
+                    Trace.TraceInformation("OnStop has been called, returning from Run(): {0}", nodeName);
+                    return;
+                }
+
+                var configTaskjava = new Task[]{ javaManager.EnsureConfigured()};
+                Trace.TraceInformation("Attempting to configure node with java: {0}", nodeName);
+                Task.WaitAll(configTaskjava, cancellationTokenSource.Token);
+
+                
+                var configTaskElastic = new Task[] { elasticsearchManager.EnsureConfigured() };
+                Trace.TraceInformation("Attempting to configure node with Elastic: {0}", nodeName);
+                Task.WaitAll(configTaskElastic, cancellationTokenSource.Token);
 
                 //Start discovery helper (non blocking)
                 bridge.StartService();
@@ -41,7 +53,7 @@ namespace ElasticsearchRole
             }
             catch (Exception e)
             {
-                Trace.TraceError(e.Message);
+                Trace.TraceError(e.Message + " " + e.InnerException);
             }
             finally
             {
@@ -123,7 +135,7 @@ namespace ElasticsearchRole
                 var share = storage.CreateCloudFileClient()
                                         .GetShareReference(shareName);
                 share.CreateIfNotExists();
-
+                
                 Trace.WriteLine("Mapping Share to " + shareDrive);
                 share.Mount(shareDrive);
             }
@@ -132,10 +144,15 @@ namespace ElasticsearchRole
                 shareDrive = emulatorDataRoot;
             }
 
+             if (!shareDrive.EndsWith(@"\"))
+            {
+                shareDrive +=   @"\";
+            }
+
             var runtimeConfig = new ElasticsearchRuntimeConfig
             {
-                DataPath= shareDrive,
-                LogPath = logRoot,
+                DataPath=  Path.Combine(shareDrive, nodeName, "data"),
+                LogPath = Path.Combine(shareDrive, nodeName, "log"),
                 TempPath = tempPath,
                 NodeName = nodeName,
                 BridgePipeName = bridge.PipeName,
@@ -143,7 +160,7 @@ namespace ElasticsearchRole
                 TemplateConfigFile = Path.Combine(roleRoot,"approot","config",ElasticsearchManager.ELASTICSEARCH_CONFIG_FILE),
                 TemplateLogConfigFile = Path.Combine(roleRoot,"approot","config",ElasticsearchManager.ELASTICSEARCH_LOG_CONFIG_FILE)
                 
-            };
+            };     
 
             elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchArtifact, archiveRoot, elasticRoot, logRoot);
             #endregion
@@ -157,8 +174,10 @@ namespace ElasticsearchRole
 
         public override void OnStop()
         {
-            Trace.TraceInformation("ElasticsearchRole is stopping");
+            onStopCalled = true;
 
+            Trace.TraceInformation("ElasticsearchRole is stopping");
+            
             cancellationTokenSource.Cancel();
 
             try
