@@ -39,9 +39,16 @@ namespace ElasticsearchRole
                 Trace.TraceInformation("Attempting to start elasticsearch as node: {0} ", nodeName);
                 elasticsearchManager.StartAndBlock(cancellationTokenSource.Token);
             }
+            catch(AggregateException ae)
+            {
+                foreach(var ex in ae.InnerExceptions)
+                {
+                    Trace.TraceError(ex.Message + " : " + ex.StackTrace);
+                }
+            }
             catch (Exception e)
             {
-                Trace.TraceError(e.Message);
+                Trace.TraceError(e.Message + " : " + e.StackTrace);
             }
             finally
             {
