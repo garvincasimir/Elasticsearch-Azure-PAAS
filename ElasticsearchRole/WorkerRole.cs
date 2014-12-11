@@ -68,6 +68,7 @@ namespace ElasticsearchRole
             string elasticRoot = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath;
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
+            string tempPath = RoleEnvironment.GetLocalResource("CustomTempRoot").RootPath; //Standard temp folder is too small
             
             /**
              * Issue #1.  In azure the role root is just a drive letter. Unfortunately, System.IO doesn't add needed slash 
@@ -78,7 +79,7 @@ namespace ElasticsearchRole
             {
                 roleRoot +=   @"\";
             }
-            string tempPath = Path.GetTempPath(); 
+            
             #endregion
 
             #region Configure Java  manager
@@ -88,11 +89,11 @@ namespace ElasticsearchRole
 
             if (!string.IsNullOrWhiteSpace(javaDownloadType) && javaDownloadType == "storage")
             {
-                javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller, storage);
+                javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller, tempPath,storage);
             }
             else
             {
-                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller);
+                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller,tempPath);
             }
 
             javaManager = new JavaManager(javaArtifact, archiveRoot, logRoot); //Java installer
@@ -106,11 +107,11 @@ namespace ElasticsearchRole
 
             if (!string.IsNullOrWhiteSpace(elasticsearchDownloadType) && elasticsearchDownloadType == "storage")
             {
-                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, storage);
+                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, tempPath ,storage);
             }
             else
             {
-                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);  
+                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip, tempPath);  
             }
 
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper

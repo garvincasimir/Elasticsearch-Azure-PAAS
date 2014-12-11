@@ -12,8 +12,8 @@ namespace Worker.Common
     public class StorageArtifact : WebArtifact
     {
         protected CloudStorageAccount Account;
-        public StorageArtifact(string sourceURL,string name, CloudStorageAccount account)
-            :base(sourceURL,name)
+        public StorageArtifact(string sourceURL,string name,string tempPath ,CloudStorageAccount account)
+            :base(sourceURL,name,tempPath)
         {
             Account = account;
         }
@@ -22,7 +22,7 @@ namespace Worker.Common
         {
             var client = Account.CreateCloudBlobClient();
 
-            string downloadDestination = useTemp ? Path.GetTempFileName() : filePath;
+            string downloadDestination = useTemp ? Path.Combine(_TempPath, Guid.NewGuid().ToString()) : filePath;
 
             var blob = client.GetBlobReferenceFromServer(new Uri(_SourceURL));
             blob.DownloadToFile(downloadDestination,FileMode.OpenOrCreate);

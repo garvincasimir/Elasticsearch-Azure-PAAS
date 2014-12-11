@@ -14,7 +14,7 @@ namespace Worker.Common
     public class PipesRuntimeBridge
     {
         //Unique pipe name per instance
-        private readonly string _pipename = Path.GetFileNameWithoutExtension(Path.GetTempFileName());
+        private readonly string _pipename = Guid.NewGuid().ToString();
         private readonly string _endpointName;
         public PipesRuntimeBridge(string endpointName)
         {
