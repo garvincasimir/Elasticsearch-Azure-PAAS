@@ -65,7 +65,6 @@ namespace Worker.Common
                 var pi = new ProcessStartInfo(_binaryArchive)
                 {
                     Arguments = " /s /L " + installLog,
-                    UseShellExecute = true,
                     RedirectStandardError = true,
                     Verb = "runas"
                 };
