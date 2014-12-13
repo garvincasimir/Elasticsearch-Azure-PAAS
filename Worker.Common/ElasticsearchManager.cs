@@ -157,7 +157,7 @@ namespace Worker.Common
             Trace.TraceInformation("Created logging config {0}", configFile);
         }
 
-        public virtual void StartAndBlock(CancellationToken token)
+        public virtual void StartAndBlock(CancellationToken token, string javaHome = null)
         {
 
             if (!token.IsCancellationRequested)
@@ -172,6 +172,10 @@ namespace Worker.Common
                     RedirectStandardOutput = true
                 };
 
+                if (!string.IsNullOrWhiteSpace(javaHome))
+                {
+                    _process.StartInfo.EnvironmentVariables["JAVA_HOME"] = javaHome;
+                }
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
                     /*

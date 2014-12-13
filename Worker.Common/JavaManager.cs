@@ -88,13 +88,19 @@ namespace Worker.Common
         {
             if (!JavaHomeConfigured())
             {
-                var javaVersion = JavaVersion();
-                var path = Path.Combine(JAVA_REGISTRY_PATH, javaVersion);
-                var javaHome = (string)Registry.GetValue(path, "JavaHome", string.Empty);
+                var javaHome = GetJavaHomeFromReg();
 
                 Trace.TraceInformation("Configuring JAVA_HOME");
                 Environment.SetEnvironmentVariable(JAVA_HOME, javaHome, EnvironmentVariableTarget.Machine);
             }
+        }
+
+        public virtual string GetJavaHomeFromReg()
+        {
+            var javaVersion = JavaVersion();
+            var path = Path.Combine(JAVA_REGISTRY_PATH, javaVersion);
+            var javaHome = (string)Registry.GetValue(path, "JavaHome", string.Empty);
+            return javaHome;
         }
     }
 }

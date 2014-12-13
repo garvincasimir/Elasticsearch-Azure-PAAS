@@ -36,8 +36,9 @@ namespace ElasticsearchRole
                 //Start discovery helper (non blocking)
                 bridge.StartService();
 
-                Trace.TraceInformation("Attempting to start elasticsearch as node: {0} ", nodeName);
-                elasticsearchManager.StartAndBlock(cancellationTokenSource.Token);
+                var javaHome = javaManager.GetJavaHomeFromReg();
+                Trace.TraceInformation("Attempting to start elasticsearch as node: {0} with JAVA_HOME =  ", nodeName, javaHome);
+                elasticsearchManager.StartAndBlock(cancellationTokenSource.Token, javaHome);
             }
             catch(AggregateException ae)
             {
