@@ -176,6 +176,12 @@ namespace Worker.Common
                 {
                     _process.StartInfo.EnvironmentVariables["JAVA_HOME"] = javaHome;
                 }
+
+                if(_config.ES_HEAP_SIZE > 0)
+                {
+                    _process.StartInfo.EnvironmentVariables["ES_HEAP_SIZE"] = string.Format("{0}m", _config.ES_HEAP_SIZE);
+                }
+
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
                     /*
