@@ -29,11 +29,10 @@
         </PerformanceCounters>
       </DiagnosticMonitorConfiguration>
     </WadCfg>
-    <StorageAccount>
-    </StorageAccount>
+    <StorageAccount></StorageAccount>
   </PublicConfig>
   <PrivateConfig>
     <StorageAccount name="" key="" endpoint="" />
   </PrivateConfig>
-  <IsEnabled>false</IsEnabled>
+  <IsEnabled>true</IsEnabled>
 </DiagnosticsConfiguration>

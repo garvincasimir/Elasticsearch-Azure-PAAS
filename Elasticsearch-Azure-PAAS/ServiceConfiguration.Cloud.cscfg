@@ -7,12 +7,12 @@
       <Setting name="JavaInstallerName" value="jdk-8u25-windows-x64.exe" />
       <Setting name="JavaDownloadURL" value="http://127.0.0.1:10000/devstoreaccount1/installers/jre-8u25-windows-x64.exe" />
       <Setting name="ElasticsearchZip" value="elasticsearch-1.4.0.zip" />
-      <Setting name="ElasticsearchDownloadURL" value="http://127.0.0.1:10000/devstoreaccount1/installers/elasticsearch-1.4.0.zip" />
+      <Setting name="ElasticsearchDownloadURL" value="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.zip" />
       <Setting name="ShareName" value="elasticdata" />
       <Setting name="ShareDrive" value="P:" />
       <Setting name="EndpointName" value="elasticsearch" />
       <Setting name="JavaDownloadType" value="storage" />
-      <Setting name="UseElasticLocalDataFolder" value="false" />
+      <Setting name="UseElasticLocalDataFolder" value="true" />
       <Setting name="PluginDownloadFolder" value="elasticsearchplugins" />
     </ConfigurationSettings>
   </Role>
