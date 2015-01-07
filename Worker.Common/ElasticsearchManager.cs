@@ -148,6 +148,7 @@ namespace Worker.Common
                 ZipFile.ExtractToDirectory(file, pluginPath);
                 Trace.TraceInformation("Extracted plugin {0}", pluginFileName);
             }
+            
         }
 
         protected virtual void ConfigureElastisearchLogging()

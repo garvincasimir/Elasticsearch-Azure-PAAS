@@ -91,9 +91,6 @@
     <None Include="Plugins\elasticsearch-azureruntime-0.0.1-SNAPSHOT.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Plugins\marvel.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

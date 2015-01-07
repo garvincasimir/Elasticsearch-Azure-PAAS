@@ -25,6 +25,7 @@
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
       <Setting name="UseElasticLocalDataFolder" />
+      <Setting name="PluginDownloadFolder" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>
