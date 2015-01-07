@@ -169,7 +169,8 @@ namespace Worker.Common
                 {
                     FileName = startupScript,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
                 };
 
                 if (!string.IsNullOrWhiteSpace(javaHome))
@@ -216,8 +217,14 @@ namespace Worker.Common
                     Stop();
                 }
 
-                
+                var errors = _process.StandardError.ReadToEnd();
+                if (!string.IsNullOrWhiteSpace(errors))
+                {
+                    Trace.TraceError("Proccess error output: \n{0} ", errors);
+                }
             }
+
+
             
         }
 
