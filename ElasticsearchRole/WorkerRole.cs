@@ -24,15 +24,18 @@ namespace ElasticsearchRole
         private JavaManager javaManager;
         private string nodeName;
         private PipesRuntimeBridge bridge;
-       
+        private ElasticsearchPluginManager pluginManager;
+
         public override void Run()
         {
             try
             {
-                var configTasks = new Task[] { javaManager.EnsureConfigured(), elasticsearchManager.EnsureConfigured() };
+                var configTasks = new Task[] { javaManager.EnsureConfigured(), elasticsearchManager.EnsureConfigured(), pluginManager.EnsureConfigured() };
                 Trace.TraceInformation("Attempting to configure node: {0}", nodeName);
                 Task.WaitAll(configTasks, cancellationTokenSource.Token);
 
+                //Copies the elastic search plugins to the plugin folder
+                pluginManager.CopyAndExtractPluginsToElasticFolder();
                 //Start discovery helper (non blocking)
                 bridge.StartService();
 
@@ -79,7 +82,7 @@ namespace ElasticsearchRole
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
             string tempPath = RoleEnvironment.GetLocalResource("CustomTempRoot").RootPath; //Standard temp folder is too small
-            
+            string pluginDownloadFolder = CloudConfigurationManager.GetSetting("PluginDownloadFolder");
             /**
              * Issue #1.  In azure the role root is just a drive letter. Unfortunately, System.IO doesn't add needed slash 
              *  so Path.Combine("E:","path\to\file") yields E:path\to\file
@@ -164,6 +167,14 @@ namespace ElasticsearchRole
             };
 
             elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchArtifact, archiveRoot, elasticRoot, logRoot);
+            #endregion
+
+
+            #region Configure Elasticsearch plugins
+
+            var elasticsearchRoot = Path.Combine(elasticRoot, Path.GetFileNameWithoutExtension(elasticsearchZip));
+            pluginManager = new ElasticsearchPluginManager(storage, archiveRoot, tempPath, pluginDownloadFolder, elasticsearchRoot); 
+
             #endregion
 
             bool result = base.OnStart();
