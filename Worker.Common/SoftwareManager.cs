@@ -37,7 +37,7 @@ namespace Worker.Common
             if (!BinaryExists())
             {
                 Trace.TraceInformation("{0} not found. Downloading.....",_binaryArchive);
-                _artifact.Download(_binaryArchive);
+                _artifact.DownloadTo(_binaryArchive);
             }
         }
     }

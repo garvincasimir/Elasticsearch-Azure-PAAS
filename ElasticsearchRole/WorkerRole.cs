@@ -29,7 +29,13 @@ namespace ElasticsearchRole
         {
             try
             {
-                var configTasks = new Task[] { javaManager.EnsureConfigured(), elasticsearchManager.EnsureConfigured() };
+
+                var configTasks = new Task[] 
+                { 
+                    javaManager.EnsureConfigured(), 
+                    elasticsearchManager.EnsureConfigured()
+                };
+
                 Trace.TraceInformation("Attempting to configure node: {0}", nodeName);
                 Task.WaitAll(configTasks, cancellationTokenSource.Token);
 
@@ -68,6 +74,7 @@ namespace ElasticsearchRole
             string javaDownloadURL = CloudConfigurationManager.GetSetting("JavaDownloadURL");
             string elasticsearchZip = CloudConfigurationManager.GetSetting("ElasticsearchZip");
             string elasticsearchDownloadURL = CloudConfigurationManager.GetSetting("ElasticsearchDownloadURL");
+            string elasticsearchPluginContainer = CloudConfigurationManager.GetSetting("ElasticsearchPluginContainer");
             string shareName = CloudConfigurationManager.GetSetting("ShareName"); //root path for es data
             string shareDrive = CloudConfigurationManager.GetSetting("ShareDrive"); //Drive letter to map azure share
             string endpointName = CloudConfigurationManager.GetSetting("EndpointName");
@@ -97,11 +104,11 @@ namespace ElasticsearchRole
 
             if (!string.IsNullOrWhiteSpace(javaDownloadType) && javaDownloadType == "storage")
             {
-                javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller, tempPath,storage);
+                javaArtifact = new StorageArtifact(javaDownloadURL, javaInstaller,storage);
             }
             else
             {
-                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller,tempPath);
+                javaArtifact = new WebArtifact(javaDownloadURL, javaInstaller);
             }
 
             javaManager = new JavaManager(javaArtifact, archiveRoot, logRoot); //Java installer
@@ -115,11 +122,11 @@ namespace ElasticsearchRole
 
             if (!string.IsNullOrWhiteSpace(elasticsearchDownloadType) && elasticsearchDownloadType == "storage")
             {
-                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip, tempPath ,storage);
+                elasticsearchArtifact = new StorageArtifact(elasticsearchDownloadURL, elasticsearchZip ,storage);
             }
             else
             {
-                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip, tempPath);  
+                elasticsearchArtifact = new WebArtifact(elasticsearchDownloadURL, elasticsearchZip);  
             }
 
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper
@@ -155,7 +162,14 @@ namespace ElasticsearchRole
             };
 
             elasticsearchManager = new ElasticsearchManager(runtimeConfig, elasticsearchArtifact, archiveRoot, elasticRoot, logRoot);
+
+            if (!string.IsNullOrWhiteSpace(elasticsearchPluginContainer))
+            {
+                elasticsearchManager.AddPluginSource(elasticsearchPluginContainer, storage);
+            }
             #endregion
+
+
 
             bool result = base.OnStart();
 

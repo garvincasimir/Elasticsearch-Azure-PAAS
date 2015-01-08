@@ -10,6 +10,8 @@ using System.IO.Compression;
 using YamlDotNet.RepresentationModel;
 using System.Threading;
 using Microsoft.Win32.SafeHandles;
+using System.Collections.Concurrent;
+using Microsoft.WindowsAzure.Storage;
 
 namespace Worker.Common
 {
@@ -17,24 +19,29 @@ namespace Worker.Common
     {
         public const string ELASTICSEARCH_CONFIG_FILE = "elasticsearch.yml";
         public const string ELASTICSEARCH_LOG_CONFIG_FILE = "logging.yml";
+        public const string ELASTICSEARCH_PLUGIN_DIR = "plugins";
 
         protected string _elasticRoot;
         protected string _pluginRoot;
         protected string _installRoot;
         protected ElasticsearchRuntimeConfig _config;
         protected Process _process = null;
+
+        protected List<Func<IEnumerable<WebArtifact>>> _sources = new List<Func<IEnumerable<WebArtifact>>>();
+        protected ConcurrentBag<string> _pluginArtifactPaths;
+
         public ElasticsearchManager(ElasticsearchRuntimeConfig config, WebArtifact artifact, string archiveRoot, string installRoot, string logRoot)
             : base(artifact, archiveRoot, logRoot)
         {
             _installRoot = installRoot;
             _elasticRoot = Path.Combine(installRoot, Path.GetFileNameWithoutExtension(artifact.Name));
-            _pluginRoot = Path.Combine(_elasticRoot, "plugins");
+            _pluginRoot = Path.Combine(_elasticRoot, ELASTICSEARCH_PLUGIN_DIR);
             _config = config;
         }
 
         public override Task EnsureConfigured()
         {
-            return Task.Factory.StartNew(() =>
+            var elasticsearchSetup = Task.Run(() =>
             {
                 //if elasticsearch zip does not exist download it
                 DownloadIfNotExists();
@@ -44,7 +51,7 @@ namespace Worker.Common
                 Install();
 
                 //Extract all packaged plugins to plugin folder 
-                ConfigurePlugins();
+                ConfigurePackagePlugins();
 
                 //Write elasticsearch.yaml
                 ConfigureElasticsearch();
@@ -54,30 +61,18 @@ namespace Worker.Common
 
             });
 
+            var mergedConfig = Task.WhenAll( elasticsearchSetup, DownloadAdditionalPlugins()).ContinueWith((t) =>
+            {
+                ConfigureAdditionalPlugins();
 
+            });
 
-
+            return mergedConfig;
         }
 
         protected virtual void Install()
         {
-            //Always trash and recreate elasticsearch folder.
-            //The resource directory should not be persisted through recycles
             Trace.TraceInformation("Re-creating elasticshearch root");
-            var dir = new DirectoryInfo(_elasticRoot);
-
-            if (dir.Exists)
-            {
-                foreach (var file in dir.EnumerateFiles("*",SearchOption.AllDirectories))
-                {
-                    file.Delete();
-                }
-
-                foreach (var folder in dir.EnumerateDirectories())
-                {
-                    folder.Delete();
-                }
-            }
 
             Trace.TraceInformation("Extracting elasticsearch to {0}", _elasticRoot);
             ZipFile.ExtractToDirectory(_binaryArchive, _installRoot);
@@ -134,20 +129,14 @@ namespace Worker.Common
 
         }
 
-        protected virtual void ConfigurePlugins()
+        protected virtual void ConfigurePackagePlugins()
         {
             var packagePlugins = Directory.GetFiles(_config.PackagePluginPath, "*.zip");
            
             Directory.CreateDirectory(_pluginRoot);
 
-            foreach (var file in packagePlugins)
-            {
-                var pluginFileName = Path.GetFileNameWithoutExtension(file);
-	            var pluginPath = Path.Combine(_pluginRoot,pluginFileName);
+            ExtractPlugins(_pluginRoot, packagePlugins);
 
-                ZipFile.ExtractToDirectory(file, pluginPath);
-                Trace.TraceInformation("Extracted plugin {0}", pluginFileName);
-            }
         }
 
         protected virtual void ConfigureElastisearchLogging()
@@ -155,6 +144,59 @@ namespace Worker.Common
             string configFile = Path.Combine(_elasticRoot, "Config", ELASTICSEARCH_LOG_CONFIG_FILE);
             File.Copy(_config.TemplateLogConfigFile, configFile,true);
             Trace.TraceInformation("Created logging config {0}", configFile);
+        }
+
+        public virtual void AddPluginSource(string containerName, CloudStorageAccount account)
+        {
+            _sources.Add(() =>
+            {
+                var client = account.CreateCloudBlobClient();
+                var container = client.GetContainerReference(containerName);
+                container.CreateIfNotExists();
+
+                var artifacts = new List<StorageArtifact>();
+
+
+                foreach (var item in container.ListBlobs(null, true))
+                {
+                    var fileName = Path.GetFileName(item.StorageUri.PrimaryUri.AbsoluteUri);
+                    artifacts.Add(new StorageArtifact(item.StorageUri.PrimaryUri.AbsoluteUri, fileName, account));
+                }
+
+                return artifacts;
+
+
+            });
+        }
+
+        protected virtual Task DownloadAdditionalPlugins()
+        {
+            _pluginArtifactPaths = new ConcurrentBag<string>();
+            var processSources = _sources.Select(s => Task.Run(s).ContinueWith((source) =>
+            {
+                foreach (var artifact in source.Result)
+                {
+                    var filePath = Path.Combine(_archiveRoot, artifact.Name);
+                    _pluginArtifactPaths.Add(filePath);
+                    if (!File.Exists(filePath))
+                    {
+                        Task.Factory.StartNew(() =>
+                        {
+                            artifact.DownloadTo(filePath);
+                        }, TaskCreationOptions.AttachedToParent);
+                    }
+
+                }
+            }));
+
+
+
+            return Task.WhenAll(processSources);
+        }
+
+        protected virtual void ConfigureAdditionalPlugins()
+        {
+            ExtractPlugins(_pluginRoot, _pluginArtifactPaths);
         }
 
         public virtual void StartAndBlock(CancellationToken token, string javaHome = null)
@@ -228,8 +270,6 @@ namespace Worker.Common
             
         }
 
-
-
         public virtual void Stop()
         {
             if (_process == null)
@@ -244,6 +284,18 @@ namespace Worker.Common
            
             _process.CloseMainWindow();
             
+        }
+
+        protected virtual void ExtractPlugins(string destination, IEnumerable<string> files)
+        {
+            Parallel.ForEach(files, (file) =>
+            {
+                var pluginFileName = Path.GetFileNameWithoutExtension(file);
+                var pluginPath = Path.Combine(destination, pluginFileName);
+
+                ZipFile.ExtractToDirectory(file, pluginPath);
+                Trace.TraceInformation("Extracted plugin {0}", pluginFileName);
+            });
         }
     }
 }

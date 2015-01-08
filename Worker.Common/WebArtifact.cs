@@ -14,7 +14,6 @@ namespace Worker.Common
     {
         protected string _SourceURL;
         protected string _Name;
-        protected string _TempPath;
 
         public string SourceUrl
         {
@@ -25,30 +24,25 @@ namespace Worker.Common
         {
             get { return _Name; }
         }
-        public WebArtifact(string sourceURL, string name, string tempPath)
+        public WebArtifact(string sourceURL, string name)
         {
             _SourceURL = sourceURL;
             _Name = name;
-            _TempPath = tempPath;
         }
 
-        public virtual void Download(string filePath, bool useTemp = true)
+        public virtual void DownloadTo(string filePath)
         {
             var client = new WebClient();
-            
-
-            string downloadDestination = useTemp ? Path.Combine(_TempPath,Guid.NewGuid().ToString()) : filePath;
+            var directory = Path.GetDirectoryName(filePath);
+            var temFileName = Guid.NewGuid().ToString();
+             
+            string downloadDestination = Path.Combine( directory,temFileName);
 
             client.DownloadFile(_SourceURL, downloadDestination);
 
-            if (useTemp)
-            {
-                File.Copy(downloadDestination, filePath,true);
-            }
+            File.Move(downloadDestination, filePath);
 
             Trace.TraceInformation("{0} download complete", filePath);
-
-
             
         }
 
