@@ -23,7 +23,6 @@
       <Setting name="ShareDrive" />
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
-      
       <Setting name="ElasticsearchPluginContainer" />
     </ConfigurationSettings>
   </WorkerRole>
