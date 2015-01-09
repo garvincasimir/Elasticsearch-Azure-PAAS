@@ -24,6 +24,9 @@ In the original proof of concept, the java and elasticsearch installers were inc
 5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent on each other to run concurrently while waiting to run tasks that are dependent on them.
 6. Doing everything in managed code allows for a lot more control and provides opportunities for customization and extensibility.
 7. Downloading binaries will not take very long if they are located in a storage account so I am not too concerned about that anymore.
+8. With the exception of Nuget.exe I try to avoid including binaries in open source repos
+9. When the project is not attached to a specific binary no changes to the solution are required to update/downgrade versions (within a certain range of releases)
+ * This makes it super easy to text the performance and stability of new updates and patches 
 
 
 Running the project

@@ -12,7 +12,8 @@
       <Setting name="ShareDrive" value="P:" />
       <Setting name="EndpointName" value="elasticsearch" />
       <Setting name="JavaDownloadType" value="storage" />
-      <Setting name="ElasticsearchPluginContainer" value="elasticsearchplugins" />
-    </ConfigurationSettings>
+      <Setting name="UseElasticLocalDataFolder" value="true" />
+	  <Setting name="ElasticsearchPluginContainer" value="elasticsearchplugins" />
+	</ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

@@ -12,6 +12,7 @@
       <LocalStorage name="ElasticRoot" sizeInMB="1000" cleanOnRoleRecycle="true" />
       <LocalStorage name="EmulatorDataRoot" sizeInMB="10000" cleanOnRoleRecycle="false" />
       <LocalStorage name="CustomTempRoot" sizeInMB="10000" cleanOnRoleRecycle="true" />
+      <LocalStorage name="ElasticDataRoot" cleanOnRoleRecycle="false" sizeInMB="10000" />
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="StorageConnection" />
@@ -23,7 +24,8 @@
       <Setting name="ShareDrive" />
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
-      <Setting name="ElasticsearchPluginContainer" />
+      <Setting name="UseElasticLocalDataFolder" />
+	  <Setting name="ElasticsearchPluginContainer" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

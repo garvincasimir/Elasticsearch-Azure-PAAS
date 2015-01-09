@@ -70,6 +70,7 @@ namespace ElasticsearchRole
 
             #region Load Config Settings
             nodeName = RoleEnvironment.CurrentRoleInstance.Id;
+            string UseElasticLocalDataFolder = CloudConfigurationManager.GetSetting("UseElasticLocalDataFolder");
             string javaInstaller = CloudConfigurationManager.GetSetting("JavaInstallerName");
             string javaDownloadURL = CloudConfigurationManager.GetSetting("JavaDownloadURL");
             string elasticsearchZip = CloudConfigurationManager.GetSetting("ElasticsearchZip");
@@ -80,6 +81,7 @@ namespace ElasticsearchRole
             string endpointName = CloudConfigurationManager.GetSetting("EndpointName");
             string archiveRoot = RoleEnvironment.GetLocalResource("ArchiveRoot").RootPath;
             string logRoot = RoleEnvironment.GetLocalResource("LogRoot").RootPath;
+            string elasticDataRoot = RoleEnvironment.GetLocalResource("ElasticDataRoot").RootPath;
             string elasticRoot = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath;
             string emulatorDataRoot = RoleEnvironment.GetLocalResource("EmulatorDataRoot").RootPath; // we need this cause we can't emulate shares
             string roleRoot = Environment.GetEnvironmentVariable("ROLEROOT");
@@ -131,21 +133,28 @@ namespace ElasticsearchRole
 
             bridge = new PipesRuntimeBridge(endpointName); //Discovery helper
 
-            //Azure file is not available in emulator
-            if (!RoleEnvironment.IsEmulated)
-            {
-                // Mount a drive for a CloudFileShare.
-                Trace.WriteLine("Configuring file Share");
-                var share = storage.CreateCloudFileClient()
-                                        .GetShareReference(shareName);
-                share.CreateIfNotExists();
+            if (UseElasticLocalDataFolder.ToLower() != "true")
+            {  
+                //Azure file is not available in emulator
+                if (!RoleEnvironment.IsEmulated)
+                {
+                    // Mount a drive for a CloudFileShare.
+                    Trace.WriteLine("Configuring file Share");
+                    var share = storage.CreateCloudFileClient()
+                        .GetShareReference(shareName);
+                    share.CreateIfNotExists();
 
-                Trace.WriteLine("Mapping Share to " + shareDrive);
-                share.Mount(shareDrive);
+                    Trace.WriteLine("Mapping Share to " + shareDrive);
+                    share.Mount(shareDrive);
+                }
+                else
+                {
+                    shareDrive = emulatorDataRoot;
+                }
             }
             else
             {
-                shareDrive = emulatorDataRoot;
+                shareDrive = elasticDataRoot;
             }
 
             var runtimeConfig = new ElasticsearchRuntimeConfig
