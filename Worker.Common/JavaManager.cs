@@ -17,10 +17,18 @@ namespace Worker.Common
         public const string JAVA_REGISTRY_PATH = "HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft\\Java Runtime Environment";
         public const string INSTALL_LOG_FILE = "jdk.txt";
 
-        public JavaManager(WebArtifact artifact, string archiveRoot, string  logRoot )
-            :base(artifact,archiveRoot,logRoot)
+        public JavaManager(IElasticsearchServiceSettings settings )
+            :base(settings,settings.JavaInstaller)
         {
-           
+            if (!string.IsNullOrWhiteSpace(settings.JavaDownloadType) && settings.JavaDownloadType == "storage")
+            {
+                _installer = new StorageArtifact(settings.JavaDownloadURL, settings.JavaInstaller, settings.StorageAccount);
+            }
+            else
+            {
+                _installer = new WebArtifact(settings.JavaDownloadURL, settings.JavaInstaller);
+            }
+            
         }
 
         public override Task EnsureConfigured()
