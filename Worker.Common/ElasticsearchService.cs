@@ -79,7 +79,7 @@ namespace Worker.Common
                 _Bridge.StartService();
 
                 var javaHome = _JavaManager.GetJavaHomeFromReg();
-                Trace.TraceInformation("Attempting to start elasticsearch as node: {0} with JAVA_HOME =  ", _Settings.NodeName, javaHome);
+                Trace.TraceInformation("Attempting to start elasticsearch as node: {0} with JAVA_HOME = {1}", _Settings.NodeName, javaHome);
                 _ElasticsearchManager.StartAndBlock(_CancellationTokenSource.Token, javaHome);
             }
             catch (AggregateException ae)

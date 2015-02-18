@@ -233,7 +233,8 @@ namespace Worker.Common
                     FileName = startupScript,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    RedirectStandardError = true,
+                    Arguments = "--silent"
                 };
 
                 if (!string.IsNullOrWhiteSpace(javaHome))
@@ -248,19 +249,8 @@ namespace Worker.Common
 
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
-                    /*
-                     * I don't like this. Only alternative is to patch the batch file.
-                     * Created issue: https://github.com/elasticsearch/elasticsearch/issues/8913
-                     */
-                    if(e.Data == "JAVA_HOME environment variable must be set!")
-                    {
-                        Trace.TraceError("Batch script could not read JAVA_HOME variable");
-                        _process.Kill();
-
-                        Trace.TraceInformation("Killed elastic search.");
-                    }
+                    Trace.TraceInformation(e.Data);
                 };
-
 
                 Trace.TraceInformation("Starting Elasticsearch with script {0}", startupScript);
 
@@ -272,7 +262,7 @@ namespace Worker.Common
                 processEnded.SafeWaitHandle = new SafeWaitHandle(_process.Handle, false);
  
                 int index = WaitHandle.WaitAny(new[] { processEnded, token.WaitHandle });
-                Trace.TraceInformation("One more more ES handles signaled: " + index);
+                Trace.TraceInformation("Proces handle signaled: " + index);
                     
                 //If the signal came from the caller cancellation token close the window
                 if (index == 1)

@@ -82,7 +82,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Plugins\elasticsearch-azureruntime-0.0.1-SNAPSHOT.zip">
+    <None Include="Plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
