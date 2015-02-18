@@ -1,19 +1,17 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using Microsoft.WindowsAzure.Storage;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO.Compression;
-using YamlDotNet.RepresentationModel;
+using System.Linq;
 using System.Threading;
-using Microsoft.Win32.SafeHandles;
-using System.Collections.Concurrent;
-using Microsoft.WindowsAzure.Storage;
+using System.Threading.Tasks;
+using YamlDotNet.RepresentationModel;
 
-namespace Worker.Common
+namespace ElasticsearchWorker
 {
     public class ElasticsearchManager : SoftwareManager
     {

@@ -2,16 +2,12 @@
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Worker.Common
+namespace ElasticsearchWorker
 {
-    public class ElasticsearchServiceSettings : Worker.Common.IElasticsearchServiceSettings
+    public class ElasticsearchServiceSettings : ElasticsearchWorker.IElasticsearchServiceSettings
     {
         //Init only via static methods
         private ElasticsearchServiceSettings(){}

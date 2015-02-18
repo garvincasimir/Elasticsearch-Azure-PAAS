@@ -1,5 +1,4 @@
-﻿using System;
-namespace Worker.Common
+﻿namespace ElasticsearchWorker
 {
     public interface IElasticsearchServiceSettings
     {

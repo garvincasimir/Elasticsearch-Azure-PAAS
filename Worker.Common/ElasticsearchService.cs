@@ -1,11 +1,10 @@
-﻿using Microsoft.WindowsAzure.ServiceRuntime;
-using RedDog.Storage.Files;
+﻿using RedDog.Storage.Files;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Worker.Common
+namespace ElasticsearchWorker
 {
     /// <summary>
     /// Serves as a wrapper for logic in the role entry point
