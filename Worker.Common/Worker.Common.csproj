@@ -57,6 +57,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RedDog.Storage">
+      <HintPath>..\packages\RedDog.Storage.0.2.0.0\lib\net40\RedDog.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -75,11 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElasticsearchService.cs" />
+    <Compile Include="ElasticsearchServiceSettings.cs" />
+    <Compile Include="IElasticsearchServiceSettings.cs" />
     <Compile Include="StorageArtifact.cs" />
     <Compile Include="WebArtifact.cs" />
     <Compile Include="ElasticsearchManager.cs" />
     <Compile Include="ElasticsearchNode.cs" />
-    <Compile Include="ElasticsearchRuntimeConfig.cs" />
     <Compile Include="JavaManager.cs" />
     <Compile Include="PipesRuntimeBridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

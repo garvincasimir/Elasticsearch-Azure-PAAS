@@ -11,33 +11,33 @@ namespace Worker.Common
 {
     public abstract class SoftwareManager
     {
-        protected WebArtifact _artifact;
+        protected WebArtifact _installer;
         protected string _archiveRoot;
         protected string _logRoot;
         protected string _binaryArchive;
+        protected IElasticsearchServiceSettings _Settings;
 
-        public SoftwareManager(WebArtifact artifact, string archiveRoot, string logRoot)
+        public SoftwareManager(IElasticsearchServiceSettings settings, string installer)
         {
-            _archiveRoot = archiveRoot;
-            _logRoot = logRoot;
-            _binaryArchive = Path.Combine(archiveRoot, artifact.Name);
-            _artifact = artifact;
+            _Settings = settings;
+            _archiveRoot = _Settings.DownloadDirectory;
+            _logRoot = _Settings.LogDirectory;
+            _binaryArchive = Path.Combine(settings.DownloadDirectory, installer);
         }
 
         public abstract Task EnsureConfigured();
 
-        protected virtual bool BinaryExists()
+        protected virtual bool Downloaded()
         {
-            var binaryExists = File.Exists(_binaryArchive);
-            return binaryExists;
+            return File.Exists(_binaryArchive);
         }
 
         protected virtual void DownloadIfNotExists()
         {
-            if (!BinaryExists())
+            if (!Downloaded())
             {
                 Trace.TraceInformation("{0} not found. Downloading.....",_binaryArchive);
-                _artifact.DownloadTo(_binaryArchive);
+                _installer.DownloadTo(_binaryArchive);
             }
         }
     }
