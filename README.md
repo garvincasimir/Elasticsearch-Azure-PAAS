@@ -19,6 +19,9 @@ This is a visual studio project which can serve as a base for a solution based o
 * Automatic Node Discovery
 * Security
 
+Typcial usage means either building the project and adding the core dll and required configuration to an existing project or make additions to the existing solution in this repository. An NuGet package might come later. 
+
+
 Do I need an Azure Account to try this?
 ---------------------------------------
 No, it runs in the full Azure Emulator on your desktop. The project is designed to work with azure files service for data and snapshots but falls back to a resource folder in the Azure Emulator. Other than that, there is no significant difference between running this project on the Azure Emulator and publishing it to Azure. 
