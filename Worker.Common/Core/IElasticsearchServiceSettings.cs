@@ -1,4 +1,4 @@
-﻿namespace ElasticsearchWorker
+﻿namespace ElasticsearchWorker.Core
 {
     public interface IElasticsearchServiceSettings
     {
@@ -24,5 +24,9 @@
         bool IsAzure { get; }
         bool IsEmulated { get; }
         int ComputedHeapSize { get; }
+        bool EnableDataBootstrap { get; }
+        string DataBootstrapDirectory { get; }
+        string GetExtra(string key);
+
     }
 }

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Utility
 {
     //TODO: Support for file signature verification
     public  class WebArtifact

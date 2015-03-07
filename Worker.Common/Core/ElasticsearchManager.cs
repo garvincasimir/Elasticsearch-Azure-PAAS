@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using ElasticsearchWorker.Utility;
+using Microsoft.Win32.SafeHandles;
 using Microsoft.WindowsAzure.Storage;
 using System;
 using System.Collections.Concurrent;
@@ -11,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
     public class ElasticsearchManager : SoftwareManager
     {

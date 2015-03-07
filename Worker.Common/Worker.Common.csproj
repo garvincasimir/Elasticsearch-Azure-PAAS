@@ -7,8 +7,8 @@
     <ProjectGuid>{85024067-4A95-4A39-837E-3A798309FFA1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Worker.Common</RootNamespace>
-    <AssemblyName>Worker.Common</AssemblyName>
+    <RootNamespace>ElasticsearchWorker</RootNamespace>
+    <AssemblyName>ElasticsearchWorker</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elasticsearch.Net">
+      <HintPath>..\packages\Elasticsearch.Net.1.4.2\lib\net45\Elasticsearch.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.3\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -78,17 +81,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElasticsearchService.cs" />
-    <Compile Include="ElasticsearchServiceSettings.cs" />
-    <Compile Include="IElasticsearchServiceSettings.cs" />
-    <Compile Include="StorageArtifact.cs" />
-    <Compile Include="WebArtifact.cs" />
-    <Compile Include="ElasticsearchManager.cs" />
-    <Compile Include="ElasticsearchNode.cs" />
-    <Compile Include="JavaManager.cs" />
-    <Compile Include="PipesRuntimeBridge.cs" />
+    <Compile Include="ClusterApi\BootstrapDataSource.cs" />
+    <Compile Include="ClusterApi\ClusterClient.cs" />
+    <Compile Include="ClusterApi\ResultWrapper.cs" />
+    <Compile Include="Data\DataBootstrapService.cs" />
+    <Compile Include="Core\ElasticsearchService.cs" />
+    <Compile Include="Core\ElasticsearchServiceSettings.cs" />
+    <Compile Include="Data\IDataBootstrapper.cs" />
+    <Compile Include="Core\IElasticsearchServiceSettings.cs" />
+    <Compile Include="ClusterApi\ClusterHealth.cs" />
+    <Compile Include="ClusterApi\MasterNode.cs" />
+    <Compile Include="Utility\StorageArtifact.cs" />
+    <Compile Include="Utility\WebArtifact.cs" />
+    <Compile Include="Core\ElasticsearchManager.cs" />
+    <Compile Include="Core\ElasticsearchNode.cs" />
+    <Compile Include="Core\JavaManager.cs" />
+    <Compile Include="Discovery\PipesRuntimeBridge.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoftwareManager.cs" />
+    <Compile Include="Core\SoftwareManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

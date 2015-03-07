@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Utility
 {
     public class StorageArtifact : WebArtifact
     {

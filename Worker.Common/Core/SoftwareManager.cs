@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using ElasticsearchWorker.Utility;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
     public abstract class SoftwareManager
     {

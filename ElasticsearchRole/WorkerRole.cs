@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
-using ElasticsearchWorker;
+using ElasticsearchWorker.Core;
 
 namespace ElasticsearchRole
 {

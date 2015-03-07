@@ -1,5 +1,5 @@
 ﻿
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
     public class ElasticsearchNode
     {

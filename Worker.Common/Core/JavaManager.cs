@@ -1,10 +1,11 @@
-﻿using Microsoft.Win32;
+﻿using ElasticsearchWorker.Utility;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
     public class JavaManager : SoftwareManager
     {

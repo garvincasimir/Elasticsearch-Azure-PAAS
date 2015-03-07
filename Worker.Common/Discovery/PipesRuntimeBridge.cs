@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.ServiceRuntime;
+﻿using ElasticsearchWorker.Core;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -6,7 +7,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Discovery
 {
     public class PipesRuntimeBridge
     {

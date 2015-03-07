@@ -1,10 +1,12 @@
-﻿using RedDog.Storage.Files;
+﻿using ElasticsearchWorker.Data;
+using ElasticsearchWorker.Discovery;
+using RedDog.Storage.Files;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
     /// <summary>
     /// Serves as a wrapper for logic in the role entry point
@@ -17,6 +19,7 @@ namespace ElasticsearchWorker
         protected JavaManager _JavaManager;
         protected PipesRuntimeBridge _Bridge;
         protected IElasticsearchServiceSettings _Settings;
+        protected DataBootstrapService _Bootstraper;
 
         private ElasticsearchService(){}
        
@@ -76,6 +79,10 @@ namespace ElasticsearchWorker
 
                 //Start discovery helper (non blocking)
                 _Bridge.StartService();
+
+                //Bootstrap data if configured (non blocking)
+                _Bootstraper.StartService();
+
 
                 var javaHome = _JavaManager.GetJavaHomeFromReg();
                 Trace.TraceInformation("Attempting to start elasticsearch as node: {0} with JAVA_HOME = {1}", _Settings.NodeName, javaHome);

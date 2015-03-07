@@ -5,9 +5,9 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ElasticsearchWorker
+namespace ElasticsearchWorker.Core
 {
-    public class ElasticsearchServiceSettings : ElasticsearchWorker.IElasticsearchServiceSettings
+    public class ElasticsearchServiceSettings : IElasticsearchServiceSettings
     {
         //Init only via static methods
         private ElasticsearchServiceSettings(){}
@@ -35,6 +35,8 @@ namespace ElasticsearchWorker
         protected bool _IsAzure;
         protected bool _IsEmulated;
         protected int _ComputedHeapSize;
+        protected bool _EnableDataBootstrap;
+        protected string _DataBootstrapDirectory;
 
         /// <summary>
         /// Init with a storage account
@@ -62,9 +64,18 @@ namespace ElasticsearchWorker
                 _DataDirectory = RoleEnvironment.GetLocalResource("ElasticDataRoot").RootPath,
                 _ElasticsearchDirectory = RoleEnvironment.GetLocalResource("ElasticRoot").RootPath,
                 _RootDirectory = Environment.GetEnvironmentVariable("ROLEROOT"),
-                _TempDirectory = RoleEnvironment.GetLocalResource("CustomTempRoot").RootPath
+                _TempDirectory = RoleEnvironment.GetLocalResource("CustomTempRoot").RootPath,
+                _DataBootstrapDirectory = RoleEnvironment.GetLocalResource("DataBootstrapDirectory").RootPath,
 
             };
+
+            bool.TryParse(CloudConfigurationManager.GetSetting("EnableDataBootstrap"), out settings._EnableDataBootstrap);
+
+            if (string.IsNullOrWhiteSpace(settings._DataBootstrapDirectory) && settings._EnableDataBootstrap)
+            {
+                settings._EnableDataBootstrap = false;
+            }
+
 
             if (!settings._RootDirectory.EndsWith(@"\"))
             {
@@ -118,6 +129,13 @@ namespace ElasticsearchWorker
         public bool IsAzure { get { return RoleEnvironment.IsAvailable; } }
         public bool IsEmulated { get { return RoleEnvironment.IsEmulated; } }
         public int ComputedHeapSize { get { return _ComputedHeapSize; } }
+        public bool EnableDataBootstrap { get { return _EnableDataBootstrap;  } }
+        public string DataBootstrapDirectory { get { return _DataBootstrapDirectory; } }
+        public string GetExtra(string key)
+        {
+            return CloudConfigurationManager.GetSetting(key);
+        }
+
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         private class MEMORYSTATUSEX
