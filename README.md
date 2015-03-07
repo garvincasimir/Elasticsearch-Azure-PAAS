@@ -1,32 +1,32 @@
 Elasticsearch-Azure-PAAS
 ========================
 
+[![Join the chat at https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a Visual Studio project for creating an [Elasticsearch](http://http://www.elasticsearch.org) cluster on Microsoft Azure using worker roles. 
 ![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
 
 Who is this for?
 ---------------------------
-This is for people who are interested in the idea of running elasticsearch in Azure but don't want to deal with the complexities of creating and managing virtual machines. This is also an opportunity to test Elasticsearch in a simulated distributed environment. You can run it, create a couple indexes, add more instances, mess with the Elasticsearch configuration etc. 
+This is for people who want to run Elastic search on Azure in the Platform as a Service enviroment. This is also an opportunity to test Elasticsearch in a simulated distributed environment. 
+
+How does this work?
+----------------------
+This is a visual studio project which can serve as a base for a solution based on an Elasticsearch cluster. The intent is to handle all the different aspecs of setting up and managing a cluster
+* Installation 
+* Configuration
+* Plugin Setup
+* Logging
+* Snapshots
+* Automatic Node Discovery
+* Security
+
+Typcial usage means either building the project and adding the core dll and required configuration to an existing project or make additions to the existing solution in this repository. An NuGet package might come later. 
 
 
 Do I need an Azure Account to try this?
 ---------------------------------------
 No, it runs in the full Azure Emulator on your desktop. The project is designed to work with azure files service for data and snapshots but falls back to a resource folder in the Azure Emulator. Other than that, there is no significant difference between running this project on the Azure Emulator and publishing it to Azure. 
-
-Why no startup tasks?
-----------------------
-In the original proof of concept, the java and elasticsearch installers were included in the project and therefore the logical choice for installing them was startup tasks. In this solution, there are no startup tasks because I am leaning in the direction of downloading all required artifacts after the role has started. Here are my reasons for this change in thinking: 
-
-1. This will allow very controlled updates and changes without re-uploading the cloud project. 
-2. Converting the initialization logic to managed code also has the added benefit of stepping through it with a debugger. We can now fully capitalize on the remote debugging capabilites of the Azure framework.
-3. The code can now be fully covered with automated tests.  
-4. Long running startup tasks such as installers can cause a role to appear unresponsive.
-5. I don't know of any way to take advantave of the async capabilities of .net in startup scripts to allow tasks which are not depenedent on each other to run concurrently while waiting to run tasks that are dependent on them.
-6. Doing everything in managed code allows for a lot more control and provides opportunities for customization and extensibility.
-7. Downloading binaries will not take very long if they are located in a storage account so I am not too concerned about that anymore.
-8. With the exception of Nuget.exe I try to avoid including binaries in open source repos
-9. When the project is not attached to a specific binary no changes to the solution are required to update/downgrade versions (within a certain range of releases)
- * This makes it super easy to text the performance and stability of new updates and patches 
 
 
 Running the project
