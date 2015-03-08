@@ -13,6 +13,7 @@
       <LocalStorage name="EmulatorDataRoot" sizeInMB="10000" cleanOnRoleRecycle="false" />
       <LocalStorage name="CustomTempRoot" sizeInMB="10000" cleanOnRoleRecycle="true" />
       <LocalStorage name="ElasticDataRoot" cleanOnRoleRecycle="false" sizeInMB="10000" />
+      <LocalStorage name="DataBootstrapDirectory" sizeInMB="20000" cleanOnRoleRecycle="false"/>
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="StorageConnection" />
