@@ -6,7 +6,7 @@ using System.Net;
 namespace ElasticsearchWorker.Utility
 {
     //TODO: Support for file signature verification
-    public  class WebArtifact
+    public  class WebArtifact : IWebArtifact
     {
         protected string _SourceURL;
         protected string _Name;

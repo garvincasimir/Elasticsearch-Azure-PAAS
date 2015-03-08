@@ -30,7 +30,7 @@ namespace ElasticsearchWorker.Core
         protected string _TemplateLogConfigFile;
         protected Process _process = null;
 
-        protected List<Func<IEnumerable<WebArtifact>>> _sources = new List<Func<IEnumerable<WebArtifact>>>();
+        protected List<Func<IEnumerable<IWebArtifact>>> _sources = new List<Func<IEnumerable<IWebArtifact>>>();
         protected ConcurrentBag<string> _pluginArtifactPaths;
 
         public ElasticsearchManager(IElasticsearchServiceSettings settings, string dataPath, string bridgeName)

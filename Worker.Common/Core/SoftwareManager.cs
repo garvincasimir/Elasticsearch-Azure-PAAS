@@ -7,7 +7,7 @@ namespace ElasticsearchWorker.Core
 {
     public abstract class SoftwareManager
     {
-        protected WebArtifact _installer;
+        protected IWebArtifact _installer;
         protected string _archiveRoot;
         protected string _logRoot;
         protected string _binaryArchive;

@@ -91,6 +91,7 @@
     <Compile Include="Core\IElasticsearchServiceSettings.cs" />
     <Compile Include="ClusterApi\ClusterHealth.cs" />
     <Compile Include="ClusterApi\MasterNode.cs" />
+    <Compile Include="Utility\IWebArtifact.cs" />
     <Compile Include="Utility\StorageArtifact.cs" />
     <Compile Include="Utility\WebArtifact.cs" />
     <Compile Include="Core\ElasticsearchManager.cs" />

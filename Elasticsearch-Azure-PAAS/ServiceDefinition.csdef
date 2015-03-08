@@ -26,7 +26,7 @@
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
       <Setting name="UseElasticLocalDataFolder" />
-	  <Setting name="ElasticsearchPluginContainer" />
+	    <Setting name="ElasticsearchPluginContainer" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>
