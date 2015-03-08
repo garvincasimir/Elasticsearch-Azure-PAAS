@@ -29,7 +29,8 @@ namespace ElasticsearchWorker.Core
             {
                 _Settings = settings,
                 _Bridge = new PipesRuntimeBridge(settings.EndpointName),
-                _JavaManager = new JavaManager(settings)
+                _JavaManager = new JavaManager(settings),
+                _Bootstraper = new DataBootstrapService(settings)
             };
 
             string dataPath;
