@@ -11,7 +11,7 @@ namespace ElasticsearchWorker.Core
     {
         public const string JAVA_HOME = "JAVA_HOME";
         public const string JAVA_REGISTRY_PATH = "HKEY_LOCAL_MACHINE\\SOFTWARE\\JavaSoft\\Java Runtime Environment";
-        public const string INSTALL_LOG_FILE = "jdk.txt";
+        public const string INSTALL_LOG_FILE = "jre.txt";
 
         public JavaManager(IElasticsearchServiceSettings settings )
             :base(settings,settings.JavaInstaller)
