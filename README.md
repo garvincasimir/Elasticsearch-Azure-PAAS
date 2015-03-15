@@ -156,6 +156,12 @@ The Discovery Plugin
 -----------------------
 The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning to be done. 
 
-Other Useful Plugins
+Alternate Configurations
 -----------------------
-Although I want to keep this project as generic as possible, if anyone has suggestions for plugins that everyone should definitely be using let me know.
+There are different options for configuring your cluster and other services on top of it. Here are a few ideas:
+
+* Worker Roles only with public communication using Shield or private communication over a virtual network
+* Worker Roles for elasticsearch and separate Public facing Web Roles which use elasticsearch as a backend service
+* Public facing  WebRoles which run both iis and Elasticsearch 
+
+![Example with everything running on a web role](https://garvincasimir.files.wordpress.com/2015/03/elasticsearch-paas-webrole-only.png "Running on WebRole")
