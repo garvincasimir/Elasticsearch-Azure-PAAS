@@ -156,6 +156,10 @@ The Discovery Plugin
 -----------------------
 The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning to be done. 
 
+NuGet Package Source
+-----------------------
+The source the NuGet package used to install this project on Web and Worker Roles can be found in the [Elasticsearch-Azure-PAAS-NuGet](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-NuGet) project.
+
 Alternate Configurations
 -----------------------
 There are different options for configuring your cluster and other services on top of it. Here are a few ideas:
