@@ -104,7 +104,7 @@ This is the name of a container accessible through the storage account in the **
 
 Usage
 ------------------------
-Once the package is installed and all configuration values are correct you can go ahead and add the initilize the service in WebRole.cs or WorkerRole.cs
+Once the package is installed and all configuration values are correct you can go ahead and initilize the service in WebRole.cs or WorkerRole.cs
 
 ```
     public class WorkerRole : RoleEntryPoint
