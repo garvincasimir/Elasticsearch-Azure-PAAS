@@ -8,6 +8,6 @@ namespace ElasticsearchWorker.Data
     public interface IDataBootstrapper
     {
         string Name { get; }
-        Task Run(IElasticsearchServiceSettings settings, Func<ResultWrapper<Boolean>> isMaster, Func<ResultWrapper<Boolean>> isHealthy);
+        void Run(IElasticsearchServiceSettings settings, Action<DateTime,string> onComplete);
     }
 }

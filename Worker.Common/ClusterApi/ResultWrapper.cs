@@ -11,5 +11,6 @@ namespace ElasticsearchWorker.ClusterApi
         public T Result { get; set; }
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
+        public int? StatusCode { get; set; }
     }
 }

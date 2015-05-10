@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition name="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
   <WorkerRole name="ElasticsearchRole" vmsize="Small">
-    <Runtime executionContext="elevated">
+    <Runtime executionContext="elevated" >
     </Runtime>
     <Endpoints>
       <InternalEndpoint name="elasticsearch" protocol="tcp" port="9300" />

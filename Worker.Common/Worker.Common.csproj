@@ -81,7 +81,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClusterApi\BootstrapDataSource.cs" />
+    <Compile Include="ClusterApi\IndexDataSource.cs" />
     <Compile Include="ClusterApi\ClusterClient.cs" />
     <Compile Include="ClusterApi\ResultWrapper.cs" />
     <Compile Include="Data\DataBootstrapService.cs" />

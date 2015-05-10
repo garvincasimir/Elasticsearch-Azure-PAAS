@@ -24,24 +24,35 @@ namespace ElasticsearchWorker.ClusterApi
         {
             var response = _clusterClient.ClusterHealth<ClusterHealth>();
             var result = Request<bool, ClusterHealth>(response,(r) => response.Success && response.Response.status == "green");
+            return result;
+        }
 
+        public ResultWrapper<T> AddOrUpdate<T>(string index, string type, T body)
+        {
+            var response = _clusterClient.IndexPut<T>(index, type, body);
+
+            var result = Request<T, T>(response, (r) => response.Response);
+            return result;
+        }
+        public ResultWrapper<T> GetItem<T>(string index, string type, string id)
+        {
+            var response = _clusterClient.Get<T>(index, type, id);
+
+            var result = Request<T, T>(response, (r) => response.Response);
             return result;
         }
 
         public ResultWrapper<T> Request<T, K>(ElasticsearchResponse<K> response, Func<ElasticsearchResponse<K>, T> setResult)
         {
-            var result = new ResultWrapper<T>();
-   
-            result.IsError = response.HttpStatusCode != (int)HttpStatusCode.OK;
-            if (response.ServerError != null)
+            var result = new ResultWrapper<T>
             {
-                result.ErrorMessage = response.ServerError.Error;
-            }
-
-            result.Result = setResult(response);
+                IsError = response.HttpStatusCode != (int)HttpStatusCode.OK,
+                ErrorMessage = response.ServerError.Error,
+                StatusCode = response.HttpStatusCode,
+                Result = setResult(response)
+            };
 
             return result;
-
         }
     }
 }
