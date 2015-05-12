@@ -1,0 +1,29 @@
+type file
+
+id Elasticsearch-Azure-PAAS
+
+version 1.0.100-Beta
+
+files 
+    Worker.Common/bin/Release/ElasticsearchWorker.dll ==> lib/Net45
+    ElasticsearchRole/Plugins ==> content/plugins
+
+dependencies
+    Elasticsearch.net >= 1.4.2
+    RedDog.Storage >= 0.2.0.0
+    YamlDotNet >= 3.5.1
+
+authors Garvin Casimir
+owners Garvin Casimir
+projectUrl https://github.com/garvincasimir/Elasticsearch-Azure-PAAS
+licenseUrl http://opensource.org/licenses/MIT
+summary Run an Elasticsearch cluster on your Azure Web and Worker Roles.
+releaseNotes For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/v1.0.0-Beta
+tags Elasticsearch, cluster, worker role, web role, azure 
+
+description
+    Use this library to help create your Elasticsearch based solutions on Azure Web and Worker Roles.
+      It manages the installation of Elasticsearch, Java, and any plugins you provide.
+      All new instances are automatically added to the cluster using automatic discovery.
+      It also comes with api that helps with adding your custom data to the Elasticsearch Cluster
+
