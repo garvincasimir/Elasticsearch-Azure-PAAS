@@ -1,13 +1,23 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{9610B935-7F03-4DCF-9F18-87ED56F1B5E3}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
+	EndProjectSection
+EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Elasticsearch-Azure-PAAS", "Elasticsearch-Azure-PAAS\Elasticsearch-Azure-PAAS.ccproj", "{47E60009-C1CA-45B5-809A-49B995148AE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticsearchRole", "ElasticsearchRole\ElasticsearchRole.csproj", "{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Common", "Worker.Common\Worker.Common.csproj", "{85024067-4A95-4A39-837E-3A798309FFA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68A1C03A-E5A8-439F-8A40-97148369ED6E}"
+	ProjectSection(SolutionItems) = preProject
+		Elasticsearch-Azure-PAAS.paket.template = Elasticsearch-Azure-PAAS.paket.template
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
