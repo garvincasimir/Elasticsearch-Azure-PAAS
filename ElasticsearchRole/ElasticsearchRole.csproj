@@ -93,11 +93,10 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip">
+    <None Include="Plugins\elasticsearch-azureruntime-0.0.3-SNAPSHOT.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Worker.Common\Worker.Common.csproj">
       <Project>{85024067-4a95-4a39-837e-3a798309ffa1}</Project>
