@@ -45,7 +45,7 @@
     <None Include="app.config" />
     <None Include="content\config\elasticsearch.yml" />
     <None Include="content\config\logging.yml" />
-    <None Include="content\plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip" />
+    <None Include="content\plugins\elasticsearch-azureruntime-0.0.3-SNAPSHOT.zip" />
     <None Include="Elasticsearch-Azure-PAAS.nuspec" />
     <None Include="tools\install.ps1" />
     <None Include="tools\library.psm1" />
