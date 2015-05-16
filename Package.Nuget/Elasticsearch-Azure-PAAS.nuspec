@@ -15,7 +15,7 @@
       It also comes with api that helps with adding your custom data to the elasticsearch Cluster
     </description>
     <summary>Run an elasticsearch cluster on your Azure Web and Worker Roles.</summary>
-    <releaseNotes>For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/v1.0.0-Beta</releaseNotes>
+    <releaseNotes>For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/1.0.3-Beta</releaseNotes>
     <tags>Elasticsearch, search, index, cluster, worker role, web role, azure, storage, PAAS</tags>
     <dependencies>
      <dependency id="Elasticsearch.net" version="1.5.0" />
