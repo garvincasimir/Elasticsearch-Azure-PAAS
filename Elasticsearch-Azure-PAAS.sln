@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticsearchRole", "Elasti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Common", "Worker.Common\Worker.Common.csproj", "{85024067-4A95-4A39-837E-3A798309FFA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.Nuget", "Package.Nuget\Package.Nuget.csproj", "{836A923E-C57D-423C-85DE-364A126C2484}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{830CF130-5EB4-426E-A3A0-CB881C1CBDDC}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +36,10 @@ Global
 		{85024067-4A95-4A39-837E-3A798309FFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85024067-4A95-4A39-837E-3A798309FFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85024067-4A95-4A39-837E-3A798309FFA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{836A923E-C57D-423C-85DE-364A126C2484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{836A923E-C57D-423C-85DE-364A126C2484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{836A923E-C57D-423C-85DE-364A126C2484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{836A923E-C57D-423C-85DE-364A126C2484}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

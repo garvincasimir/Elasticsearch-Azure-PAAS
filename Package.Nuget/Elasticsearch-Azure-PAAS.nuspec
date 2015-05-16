@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Elasticsearch-Azure-PAAS</id>
+    <version>1.0.2-Beta1</version>
+    <title>Elasticcsearch Azure PAAS</title>
+    <authors>Garvin Casimir</authors>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/garvincasimir/Elasticsearch-Azure-PAAS</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Use this library to help create your elasticsearch based solutions on Azure Web and Worker Roles.
+      It manages the installation of Elasticsearch, Java, and any plugins you provide.
+      All new instances are automatically added to the cluster using automatic discovery.
+      It also comes with api that helps with adding your custom data to the elasticsearch Cluster
+    </description>
+    <summary>Run an elasticsearch cluster on your Azure Web and Worker Roles.</summary>
+    <releaseNotes>For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/v1.0.0-Beta</releaseNotes>
+    <tags>Elasticsearch, search, index, cluster, worker role, web role, azure, storage, PAAS</tags>
+    <dependencies>
+     <dependency id="Elasticsearch.net" version="1.5.0" />
+     <dependency id="RedDog.Storage" version="0.2.0.0" />
+     <dependency id="YamlDotNet" version="3.5.1" />
+   </dependencies>
+  </metadata>
+  <files>
+    <file src="content\config\elasticsearch.yml" target="content\config\elasticsearch.yml" />
+    <file src="content\config\logging.yml" target="content\config\logging.yml" />
+    <file src="content\plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip" target="content\plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip" />
+    <file src="lib\net45\ElasticsearchWorker.dll" target="lib\net45\ElasticsearchWorker.dll" />
+    <file src="tools\templates\ServiceConfiguration.template.cscfg" target="tools\templates\ServiceConfiguration.template.cscfg" />
+    <file src="tools\templates\ServiceDefinition.template.csdef" target="tools\templates\ServiceDefinition.template.csdef" />
+    <file src="tools\install.ps1" target="tools\install.ps1" />
+    <file src="tools\library.psm1" target="tools\library.psm1" />
+    <file src="tools\uninstall.ps1" target="tools\uninstall.ps1" />
+  </files>
+</package>
