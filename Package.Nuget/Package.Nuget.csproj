@@ -42,6 +42,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="content\config\elasticsearch.yml" />
     <None Include="content\config\logging.yml" />
     <None Include="content\plugins\elasticsearch-azureruntime-0.0.2-SNAPSHOT.zip" />

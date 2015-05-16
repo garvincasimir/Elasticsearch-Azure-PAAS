@@ -1,19 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
   <Role name="ElasticsearchRole">
     <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="StorageConnection" value="UseDevelopmentStorage=true" />
       <Setting name="JavaInstallerName" value="jre-8u40-windows-x64.exe" />
       <Setting name="JavaDownloadURL" value="http://127.0.0.1:10000/devstoreaccount1/installers/jre-8u40-windows-x64.exe" />
-      <Setting name="ElasticsearchZip" value="elasticsearch-1.4.3.zip" />
-      <Setting name="ElasticsearchDownloadURL" value="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.3.zip" />
+      <Setting name="ElasticsearchZip" value="elasticsearch-1.5.2.zip" />
+      <Setting name="ElasticsearchDownloadURL" value="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.2.zip" />
       <Setting name="ShareName" value="elasticdata" />
       <Setting name="ShareDrive" value="P:" />
       <Setting name="EndpointName" value="elasticsearch" />
       <Setting name="JavaDownloadType" value="storage" />
       <Setting name="UseElasticLocalDataFolder" value="true" />
-	  <Setting name="ElasticsearchPluginContainer" value="elasticsearchplugins" />
-	</ConfigurationSettings>
+      <Setting name="ElasticsearchPluginContainer" value="elasticsearchplugins" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+    </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

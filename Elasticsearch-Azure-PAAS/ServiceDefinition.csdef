@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
+<ServiceDefinition name="Elasticsearch_Azure_PAAS" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
   <WorkerRole name="ElasticsearchRole" vmsize="Small">
-    <Runtime executionContext="elevated" >
+    <Runtime executionContext="elevated">
     </Runtime>
     <Endpoints>
       <InternalEndpoint name="elasticsearch" protocol="tcp" port="9300" />
@@ -13,7 +13,7 @@
       <LocalStorage name="EmulatorDataRoot" sizeInMB="10000" cleanOnRoleRecycle="false" />
       <LocalStorage name="CustomTempRoot" sizeInMB="10000" cleanOnRoleRecycle="true" />
       <LocalStorage name="ElasticDataRoot" cleanOnRoleRecycle="false" sizeInMB="10000" />
-      <LocalStorage name="DataBootstrapDirectory" sizeInMB="20000" cleanOnRoleRecycle="false"/>
+      <LocalStorage name="DataBootstrapDirectory" sizeInMB="20000" cleanOnRoleRecycle="false" />
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="StorageConnection" />
@@ -26,7 +26,8 @@
       <Setting name="EndpointName" />
       <Setting name="JavaDownloadType" />
       <Setting name="UseElasticLocalDataFolder" />
-	    <Setting name="ElasticsearchPluginContainer" />
+      <Setting name="ElasticsearchPluginContainer" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>
