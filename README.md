@@ -158,7 +158,7 @@ The discovery plugin gets information about the role instances from the webrole 
 
 NuGet Package Source
 -----------------------
-The source the NuGet package used to install this project on Web and Worker Roles can be found in the [Elasticsearch-Azure-PAAS-NuGet](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-NuGet) project.
+The source the NuGet package used to install this project on Web and Worker Roles is the Package.NuGet project located in this repository.
 
 Alternate Configurations
 -----------------------
