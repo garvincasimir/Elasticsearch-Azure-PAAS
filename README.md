@@ -3,17 +3,17 @@ Elasticsearch-Azure-PAAS
 
 [![Join the chat at https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is a Visual Studio project for creating an [Elasticsearch](http://http://www.elasticsearch.org) cluster on Microsoft Azure using worker roles. 
+This is a Visual Studio project for creating an [Elasticsearch](http://http://www.elasticsearch.org) cluster on Microsoft Azure using worker roles.
 ![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
 
 Who is this for?
 ---------------------------
-This is for people who want to run Elastic search on Azure in the Platform as a Service enviroment. This is also an opportunity to test Elasticsearch in a simulated distributed environment. 
+This is for people who want to run Elastic search on Azure in the Platform as a Service enviroment. This is also an opportunity to test Elasticsearch in a simulated distributed environment.
 
 How does this work?
 ----------------------
 This is a visual studio project which can serve as a base for a solution based on an Elasticsearch cluster. The intent is to handle all the different aspecs of setting up and managing a cluster
-* Installation 
+* Installation
 * Configuration
 * Plugin Setup
 * Logging
@@ -25,15 +25,17 @@ Typcial usage involves installing the NuGet package on existing Web or Worker ro
 
 Do I need an Azure Account to try this?
 ---------------------------------------
-No, it runs in the full Azure Emulator on your desktop. The project is designed to work with azure files service for data and snapshots but falls back to a resource folder in the Azure Emulator. Other than that, there is no significant difference between running this project on the Azure Emulator and publishing it to Azure. 
+No, it runs in the full Azure Emulator on your desktop. The project is designed to work with azure files service for data and snapshots but falls back to a resource folder in the Azure Emulator. Other than that, there is no significant difference between running this project on the Azure Emulator and publishing it to Azure.
 
 Installation
 -------------------
 Install the NuGet package
 
-    Install-Package Elasticsearch-Azure-PAAS -Version 1.0.4-Beta -Pre
+    Install-Package Elasticsearch-Azure-PAAS -Version 1.0.5-Beta -Pre
 
-This package will add the required settings to any cloud service projects that refer to the Web or Worker Role the packaged was installed on.
+This package will add the required settings to any cloud service projects that refer to the Web or Worker Role the packaged was installed on. It also adds two folders called Config and Plugins. Please set the contents of these folders to always copy to output directory.
+
+Config/elasticsearch.yml and Config/logging.yml are the base config files for elasticsearch. You can modify them if you want to add any settings of your own. The settings in these files will apply to all instances in the cluster.
 
 
 Settings
@@ -45,7 +47,7 @@ The service will download the java jre installer from this url.
 
 **Default**: http://127.0.0.1:10000/devstoreaccount1/installers/jre-8u40-windows-x64.exe
 
-######JavaDownloadType 
+######JavaDownloadType
 This tells the service whether **JavaDownloadURL** is a web accessible location or on the configured storage account
 
 **Default**: storage
@@ -59,9 +61,9 @@ This is simply the name used to save the jre installer into the download cache o
 ######ElasticsearchDownloadURL
 The service will download the java jre installer from this url.
 
-**Default**: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.2.zip
+**Default**: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.0.zip
 
-######ElasticsearchDownloadType 
+######ElasticsearchDownloadType
 This tells the service whether **ElasticsearchDownloadURL** is a web accessible location or on the configured storage account
 
 **Default**: storage
@@ -70,7 +72,7 @@ This tells the service whether **ElasticsearchDownloadURL** is a web accessible 
 ######ElasticsearchZip
 This is simply the name used to save the elasticsearch package into the download cache on the role instance
 
-**Default**: elasticsearch-1.5.2.zip
+**Default**: elasticsearch-1.7.0.zip
 
 ######StorageConnection
 The service will use this connection string to download any download types marked as *storage*. It will also be used to create the share used to store elasticsearch data.
@@ -121,7 +123,7 @@ Once the package is installed and all configuration values are correct you can g
             // Not sure what this should be. Hopefully storage over smb doesn't open a million connections
             ServicePointManager.DefaultConnectionLimit = 12;
 
-   
+
             var settings = ElasticsearchServiceSettings.FromStorage(storage);
             service = ElasticsearchService.FromSettings(settings);
             bool result = base.OnStart();
@@ -149,12 +151,13 @@ Once the package is installed and all configuration values are correct you can g
 
 Running in the Emulator
 -------------------------
+If you find things a bit sluggish on startup in the emulator don't be alarmed. The code is written to use as much of the available resources as possible to minimize startup time. As a result, the initialization steps run concurrently using async tasks. After deployment to Azure, it will not re-run the initialization steps after the initial config. Therefore, subsequent role instance recycles will be much quicker.
 
 ![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running1.png "Running in Emulator with Fiddler for test")
 
 The Discovery Plugin
 -----------------------
-The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is lots of cleaning to be done. 
+The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is some cleaning to be done.
 
 NuGet Package Source
 -----------------------
@@ -166,6 +169,8 @@ There are different options for configuring your cluster and other services on t
 
 * Worker Roles only with public communication using Shield or private communication over a virtual network
 * Worker Roles for elasticsearch and separate Public facing Web Roles which use elasticsearch as a backend service
-* Public facing  WebRoles which run both iis and Elasticsearch 
+* Public facing  WebRoles which run both iis and Elasticsearch
 
 ![Example with everything running on a web role](https://garvincasimir.files.wordpress.com/2015/03/elasticsearch-paas-webrole-only.png "Running on WebRole")
+
+I hope this project is useful to you. If you have a quick question and don't want to create an issue you can reach me on twitter @garvincasimir.
