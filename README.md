@@ -3,7 +3,7 @@ Elasticsearch-Azure-PAAS
 
 [![Join the chat at https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/garvincasimir/Elasticsearch-Azure-PAAS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is a Visual Studio project for creating an [Elasticsearch](http://http://www.elasticsearch.org) cluster on Microsoft Azure using worker roles.
+This is a Visual Studio project for creating an [Elasticsearch](https://www.elastic.co/) cluster on Microsoft Azure using worker roles.
 ![System Design](https://garvincasimir.files.wordpress.com/2014/10/elasticsearch-paas.png "Project Conceptual Design")
 
 Who is this for?
