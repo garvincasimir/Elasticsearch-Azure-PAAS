@@ -50,7 +50,7 @@ namespace ElasticsearchWorker.Core
             }
             else
             {
-                dataPath = settings.UseElasticLocalDataFolder;
+                dataPath = settings.DataDirectory;
             }
 
             service._ElasticsearchManager = new ElasticsearchManager(settings, dataPath, service._Bridge.PipeName);
