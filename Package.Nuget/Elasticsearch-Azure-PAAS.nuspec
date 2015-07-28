@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Elasticsearch-Azure-PAAS</id>
-    <version>1.0.5-Beta</version>
+    <version>1.0.6-Beta</version>
     <title>Elasticcsearch Azure PAAS</title>
     <authors>Garvin Casimir</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -15,7 +15,7 @@
       It also comes with api that helps with adding your custom data to the elasticsearch Cluster
     </description>
     <summary>Run an elasticsearch cluster on your Azure Web and Worker Roles.</summary>
-    <releaseNotes>For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/1.0.5-Beta</releaseNotes>
+    <releaseNotes>For release notes visit https://github.com/garvincasimir/Elasticsearch-Azure-PAAS/releases/tag/1.0.6-Beta</releaseNotes>
     <tags>Elasticsearch, search, index, cluster, worker role, web role, azure, storage, PAAS</tags>
     <dependencies>
      <dependency id="Elasticsearch.net" version="1.7.0" />
