@@ -21,7 +21,7 @@
      <dependency id="Elasticsearch.net" version="1.7.0" />
      <dependency id="RedDog.Storage" version="0.2.0.0" />
      <dependency id="YamlDotNet" version="3.6.1" />
-     <package id="WindowsAzure.Storage" version="5.0.0" targetFramework="net45" />
+     <dependency id="WindowsAzure.Storage" version="5.0.0" />
    </dependencies>
   </metadata>
   <files>

@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure;
-using Microsoft.WindowsAzure.ServiceRuntime;
+﻿using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 
 namespace ElasticsearchWorker.Core
 {
@@ -43,22 +43,22 @@ namespace ElasticsearchWorker.Core
         /// </summary>
         /// <param name="account">Cloud Storage Account</param>
         public static ElasticsearchServiceSettings FromStorage(CloudStorageAccount account)
-        {
+        { 
             var settings = new ElasticsearchServiceSettings()
             {
                 _StorageAccount = account,
                 _NodeName = RoleEnvironment.CurrentRoleInstance.Id,
-                _UseElasticLocalDataFolder = CloudConfigurationManager.GetSetting("UseElasticLocalDataFolder"),
-                _JavaInstaller = CloudConfigurationManager.GetSetting("JavaInstallerName"),
-                _JavaDownloadURL = CloudConfigurationManager.GetSetting("JavaDownloadURL"),
-                _JavaDownloadType = CloudConfigurationManager.GetSetting("JavaDownloadType"),
-                _ElasticsearchInstaller = CloudConfigurationManager.GetSetting("ElasticsearchZip"),
-                _ElasticsearchDownloadURL = CloudConfigurationManager.GetSetting("ElasticsearchDownloadURL"),
-                _ElasticsearchDownloadType = CloudConfigurationManager.GetSetting("ElasticsearchDownloadType"),
-                _ElasticsearchPluginContainer = CloudConfigurationManager.GetSetting("ElasticsearchPluginContainer"),
-                _DataShareName = CloudConfigurationManager.GetSetting("ShareName"),
-                _DataShareDrive = CloudConfigurationManager.GetSetting("ShareDrive"),
-                _EndpointName = CloudConfigurationManager.GetSetting("EndpointName"),
+                _UseElasticLocalDataFolder = RoleEnvironment.GetConfigurationSettingValue("UseElasticLocalDataFolder"),
+                _JavaInstaller = RoleEnvironment.GetConfigurationSettingValue("JavaInstallerName"),
+                _JavaDownloadURL = RoleEnvironment.GetConfigurationSettingValue("JavaDownloadURL"),
+                _JavaDownloadType = RoleEnvironment.GetConfigurationSettingValue("JavaDownloadType"),
+                _ElasticsearchInstaller = RoleEnvironment.GetConfigurationSettingValue("ElasticsearchZip"),
+                _ElasticsearchDownloadURL = RoleEnvironment.GetConfigurationSettingValue("ElasticsearchDownloadURL"),
+                _ElasticsearchDownloadType = RoleEnvironment.GetConfigurationSettingValue("ElasticsearchDownloadType"),
+                _ElasticsearchPluginContainer = RoleEnvironment.GetConfigurationSettingValue("ElasticsearchPluginContainer"),
+                _DataShareName = RoleEnvironment.GetConfigurationSettingValue("ShareName"),
+                _DataShareDrive = RoleEnvironment.GetConfigurationSettingValue("ShareDrive"),
+                _EndpointName = RoleEnvironment.GetConfigurationSettingValue("EndpointName"),
                 _DownloadDirectory = RoleEnvironment.GetLocalResource("ArchiveRoot").RootPath,
                 _LogDirectory = RoleEnvironment.GetLocalResource("LogRoot").RootPath,
                 _DataDirectory = RoleEnvironment.GetLocalResource("ElasticDataRoot").RootPath,
@@ -69,7 +69,7 @@ namespace ElasticsearchWorker.Core
 
             };
 
-            bool.TryParse(CloudConfigurationManager.GetSetting("EnableDataBootstrap"), out settings._EnableDataBootstrap);
+            bool.TryParse(RoleEnvironment.GetConfigurationSettingValue("EnableDataBootstrap"), out settings._EnableDataBootstrap);
 
             if (string.IsNullOrWhiteSpace(settings._DataBootstrapDirectory) && settings._EnableDataBootstrap)
             {
@@ -133,7 +133,7 @@ namespace ElasticsearchWorker.Core
         public string DataBootstrapDirectory { get { return _DataBootstrapDirectory; } }
         public string GetExtra(string key)
         {
-            return CloudConfigurationManager.GetSetting(key);
+            return RoleEnvironment.GetConfigurationSettingValue(key);
         }
 
 
