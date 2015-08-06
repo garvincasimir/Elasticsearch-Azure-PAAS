@@ -19,7 +19,7 @@ namespace ElasticsearchWorker.Core
         protected JavaManager _JavaManager;
         protected PipesRuntimeBridge _Bridge;
         protected IElasticsearchServiceSettings _Settings;
-        protected DataBootstrapService _Bootstraper;
+        protected DataBootstrapService _BootstrapService;
 
         private ElasticsearchService(){}
        
@@ -30,7 +30,7 @@ namespace ElasticsearchWorker.Core
                 _Settings = settings,
                 _Bridge = new PipesRuntimeBridge(settings.EndpointName),
                 _JavaManager = new JavaManager(settings),
-                _Bootstraper = new DataBootstrapService(settings)
+                _BootstrapService = new DataBootstrapService(settings)
             };
 
             string dataPath;
@@ -82,7 +82,7 @@ namespace ElasticsearchWorker.Core
                 _Bridge.StartService();
 
                 //Bootstrap data if configured (non blocking)
-                _Bootstraper.StartService();
+                _BootstrapService.StartService();
 
 
                 var javaHome = _JavaManager.GetJavaHomeFromReg();
@@ -120,6 +120,11 @@ namespace ElasticsearchWorker.Core
             }
 
             _RunCompleteEvent.WaitOne();
+        }
+
+        public void AddBootstrapper(IDataBootstrapper bootstraper)
+        {
+            _BootstrapService.Add(bootstraper);
         }
  
     }
