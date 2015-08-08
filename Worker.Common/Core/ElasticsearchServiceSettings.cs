@@ -86,6 +86,12 @@ namespace ElasticsearchWorker.Core
             //Set root to approot=App directory
             settings._RootDirectory = Path.Combine(settings._RootDirectory, "approot");
 
+            //Emulator does not copy webrole files to approot 
+            if (RoleEnvironment.IsEmulated && IsWebRole)
+            {
+                settings._RootDirectory = Path.Combine(settings._RootDirectory, "bin");
+            }
+
             //Calculate heap size
             MEMORYSTATUSEX memoryStatus = new MEMORYSTATUSEX();
             GlobalMemoryStatusEx(memoryStatus);
@@ -160,5 +166,13 @@ namespace ElasticsearchWorker.Core
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX lpBuffer);
+
+        private static bool IsWebRole
+        {
+            get
+            {
+                return RoleEnvironment.CurrentRoleInstance.Id.ToLower().Contains("webrole");
+            }
+        }
     }
 }
