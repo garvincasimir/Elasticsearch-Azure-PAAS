@@ -1,4 +1,5 @@
 ﻿using Elasticsearch.Net;
+using Elasticsearch.Net.Connection;
 using ElasticsearchWorker.IndexResponse;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,44 @@ namespace ElasticsearchWorker.ClusterApi
 {
     public class ClusterClient
     {
-        protected ElasticsearchClient _clusterClient = new ElasticsearchClient();
+        protected ElasticsearchClient _clusterClient;
+
+        public ClusterClient()
+        {
+            var settings = new ConnectionConfiguration();
+        
+            settings.ThrowOnElasticsearchServerExceptions(false);
+            
+            _clusterClient = new ElasticsearchClient(settings);
+            
+        }
         public ResultWrapper<bool> IsMaster(string nodeName)
         {
-            var response = _clusterClient.ClusterState<MasterNode>("master_node");
-            var result = Request<bool,MasterNode>(response,(r) =>  r.Success && r.Response.master_node == nodeName);
+            var response = _clusterClient.ClusterState<MasterNode>("master_node,nodes");
+
+            var result = Request<bool,MasterNode>(response,(r) =>  r.Success && r.Response.nodes[r.Response.master_node].name == nodeName);
 
             return result;
         }
 
         public ResultWrapper<bool> IsClusterHealthy()
         {
-            var response = _clusterClient.ClusterHealth<ClusterHealth>();
-            var result = Request<bool, ClusterHealth>(response,(r) => response.Success && response.Response.status == "green");
-            return result;
+            try
+            {
+                var response = _clusterClient.ClusterHealth<ClusterHealth>();
+                var result = Request<bool, ClusterHealth>(response, (r) => response.Success && response.Response.status == "green");
+                return result;
+            }
+            catch(WebException e)
+            {
+                return new ResultWrapper<bool>()
+                {
+                    ErrorMessage = e.Message,
+                    StatusCode = (int)e.Status,
+                    IsError = true
+                    
+                };
+            }
         }
 
         public ResultWrapper<T> AddOrUpdate<T>(string index, string type, T body)
@@ -47,11 +72,15 @@ namespace ElasticsearchWorker.ClusterApi
             var result = new ResultWrapper<T>
             {
                 IsError = response.HttpStatusCode != (int)HttpStatusCode.OK,
-                ErrorMessage = response.ServerError.Error,
+                
                 StatusCode = response.HttpStatusCode,
                 Result = setResult(response)
             };
 
+            if (response.ServerError != null)
+            {
+                result.ErrorMessage = response.ServerError.Error;
+            }
             return result;
         }
     }

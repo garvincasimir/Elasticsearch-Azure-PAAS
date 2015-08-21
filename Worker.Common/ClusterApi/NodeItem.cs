@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ElasticsearchWorker.IndexResponse
 {
-    public class MasterNode
+    public class NodeItem
     {
-        public string master_node { get; set; }
-        public Dictionary<string,NodeItem> nodes {get;set;}
+        public string name { get; set; }
+        public string transport_address { get; set; }
     }
 }

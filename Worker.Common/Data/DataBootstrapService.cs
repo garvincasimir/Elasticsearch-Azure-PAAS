@@ -56,9 +56,14 @@ namespace ElasticsearchWorker.Data
                 //Start downloading data. Schedule based on available resources
                 //Most people will probably have one of these but we will allow as many as your resources can handle.
                 //Be conservative as this shares resources with your cluster. Streaming is your friend. Don't hog memory or cpu.
+                Trace.TraceInformation("Running Bootstrappers");
                 Parallel.ForEach(_Bootstrappers, source =>
                 {
+                    Trace.TraceInformation("Running {0}", source.Name);
+
                     var masterState = _client.IsMaster(_Settings.NodeName);
+                    Trace.TraceInformation("IsMaster: {0}", masterState.Result);
+                    Trace.TraceInformation("Master Error: {0}", masterState.ErrorMessage);
 
                     if (!masterState.IsError && masterState.Result == true) 
                     {
