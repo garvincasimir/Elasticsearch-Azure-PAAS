@@ -19,7 +19,11 @@ namespace ElasticsearchWorker.ClusterApi
             var settings = new ConnectionConfiguration();
         
             settings.ThrowOnElasticsearchServerExceptions(false);
-            
+            var timeout = Convert.ToInt32(TimeSpan.FromMinutes(30).TotalMilliseconds);
+            settings.SetConnectTimeout(timeout);
+            settings.SetTimeout(timeout);
+            settings.ExposeRawResponse();
+
             _clusterClient = new ElasticsearchClient(settings);
             
         }
@@ -52,17 +56,43 @@ namespace ElasticsearchWorker.ClusterApi
             }
         }
 
-        public ResultWrapper<T> AddOrUpdate<T>(string index, string type, T body)
+        public ResultWrapper<T> BulkAddOrUpdate<T>(string index, string type, IEnumerable<T> body, Func<T, string> getId)
         {
-            var response = _clusterClient.IndexPut<T>(index, type, body);
+            var dynamicBody = new List<object>();
 
+            foreach (var item in body)
+            {
+                var id = getId(item);
+                dynamicBody.Add(new { 
+                    index = new { 
+                        _id = id 
+                    } 
+                });
+                dynamicBody.Add(item);
+            }
+
+
+
+            var response = _clusterClient.BulkPut<T>(index, type, dynamicBody.ToArray());
+
+            return new ResultWrapper<T>
+            {
+                ErrorMessage = response.ServerError == null ? null : response.ServerError.Error,
+                IsError =  response.HttpStatusCode != (int)HttpStatusCode.OK,
+                StatusCode = response.HttpStatusCode
+            };
+        } 
+        public ResultWrapper<T> AddOrUpdate<T>(string index, string type, string id,T body)
+        {
+            var response = _clusterClient.Index<T>(index, type,id ,body);
+         
             var result = Request<T, T>(response, (r) => response.Response);
             return result;
         }
         public ResultWrapper<T> GetItem<T>(string index, string type, string id)
         {
-            var response = _clusterClient.Get<T>(index, type, id);
-
+            var response = _clusterClient.GetSource<T>(index, type, id);
+            
             var result = Request<T, T>(response, (r) => response.Response);
             return result;
         }

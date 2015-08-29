@@ -79,7 +79,7 @@ namespace ElasticsearchWorker.Data
                             source.Run(_Settings, (nextUpdateDate,errorMessage) =>
                             {
                                 //This should not throw
-                                var result = _client.AddOrUpdate<IndexDataSource>(DATA_BOOTSTRAP, INDEX_DATA_SOURCE, new IndexDataSource
+                                var result = _client.AddOrUpdate<IndexDataSource>(DATA_BOOTSTRAP, INDEX_DATA_SOURCE, source.Name , new IndexDataSource
                                 {
                                     Name = source.Name,
                                     NextUpdate = nextUpdateDate, //Let the bootstrapper say when next it wants to run

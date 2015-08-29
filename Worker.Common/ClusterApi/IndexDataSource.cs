@@ -17,5 +17,6 @@ namespace ElasticsearchWorker
         public DateTime? NextUpdate { get; set; }
         public DateTime? LastErrorDate { get; set; }
         public string LastErrorMessage { get; set; }
+        
     }
 }
