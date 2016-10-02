@@ -1,16 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Elasticsearch-Azure-PAAS", "Elasticsearch-Azure-PAAS\Elasticsearch-Azure-PAAS.ccproj", "{47E60009-C1CA-45B5-809A-49B995148AE7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticsearchRole", "ElasticsearchRole\ElasticsearchRole.csproj", "{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Common", "Worker.Common\Worker.Common.csproj", "{85024067-4A95-4A39-837E-3A798309FFA1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.Nuget", "Package.Nuget\Package.Nuget.csproj", "{836A923E-C57D-423C-85DE-364A126C2484}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{830CF130-5EB4-426E-A3A0-CB881C1CBDDC}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -22,6 +14,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Elasticsearch-Azure-PAAS", "Elasticsearch-Azure-PAAS\Elasticsearch-Azure-PAAS.ccproj", "{47E60009-C1CA-45B5-809A-49B995148AE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticsearchRole", "ElasticsearchRole\ElasticsearchRole.csproj", "{201AAC9E-78E6-45A0-88CA-8E1F1A7D2549}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Common", "Worker.Common\Worker.Common.csproj", "{85024067-4A95-4A39-837E-3A798309FFA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Package.Nuget", "Package.Nuget\Package.Nuget.csproj", "{836A923E-C57D-423C-85DE-364A126C2484}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

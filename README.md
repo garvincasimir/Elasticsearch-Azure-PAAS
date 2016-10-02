@@ -61,7 +61,7 @@ This is simply the name used to save the jre installer into the download cache o
 ######ElasticsearchDownloadURL
 The service will download the java jre installer from this url.
 
-**Default**: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.0.zip
+**Default**: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-2.4.1.zip
 
 ######ElasticsearchDownloadType
 This tells the service whether **ElasticsearchDownloadURL** is a web accessible location or on the configured storage account
@@ -72,7 +72,7 @@ This tells the service whether **ElasticsearchDownloadURL** is a web accessible 
 ######ElasticsearchZip
 This is simply the name used to save the elasticsearch package into the download cache on the role instance
 
-**Default**: elasticsearch-1.7.0.zip
+**Default**: elasticsearch-2.4.1.zip
 
 ######StorageConnection
 The service will use this connection string to download any download types marked as *storage*. It will also be used to create the share used to store elasticsearch data.

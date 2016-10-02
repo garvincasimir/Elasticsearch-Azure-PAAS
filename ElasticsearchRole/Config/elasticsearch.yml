@@ -349,7 +349,7 @@ discovery.zen.ping.multicast.enabled: false
 
 #
 discovery:
-    type: com.github.garvincasimir.elasticsearch.azureruntime.AzureRuntimeDiscoveryModule
+    type: azureruntime
 #
 ################################## Slow Log ##################################
 
