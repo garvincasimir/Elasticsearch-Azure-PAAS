@@ -1,5 +1,4 @@
 ﻿using Elasticsearch.Net;
-using Elasticsearch.Net.Connection;
 using ElasticsearchWorker.IndexResponse;
 using System;
 using System.Collections.Generic;
@@ -12,26 +11,25 @@ namespace ElasticsearchWorker.ClusterApi
 {
     public class ClusterClient
     {
-        protected ElasticsearchClient _clusterClient;
+        protected ElasticLowLevelClient _clusterClient;
 
         public ClusterClient()
         {
             var settings = new ConnectionConfiguration();
-        
-            settings.ThrowOnElasticsearchServerExceptions(false);
-            var timeout = Convert.ToInt32(TimeSpan.FromMinutes(30).TotalMilliseconds);
-            settings.SetConnectTimeout(timeout);
-            settings.SetTimeout(timeout);
-            settings.ExposeRawResponse();
 
-            _clusterClient = new ElasticsearchClient(settings);
+            settings.ThrowExceptions(false);
+         
+            settings.RequestTimeout(TimeSpan.FromMinutes(30));
+           
+
+            _clusterClient = new ElasticLowLevelClient(settings);
             
         }
         public ResultWrapper<bool> IsMaster(string nodeName)
         {
             var response = _clusterClient.ClusterState<MasterNode>("master_node,nodes");
 
-            var result = Request<bool,MasterNode>(response,(r) =>  r.Success && r.Response.nodes[r.Response.master_node].name == nodeName);
+            var result = Request<bool,MasterNode>(response,(r) =>  r.Success && r.Body.nodes[r.Body.master_node].name == nodeName);
 
             return result;
         }
@@ -41,7 +39,7 @@ namespace ElasticsearchWorker.ClusterApi
             try
             {
                 var response = _clusterClient.ClusterHealth<ClusterHealth>();
-                var result = Request<bool, ClusterHealth>(response, (r) => response.Success && response.Response.status == "green");
+                var result = Request<bool, ClusterHealth>(response, (r) => response.Success && response.Body.status == "green");
                 return result;
             }
             catch(WebException e)
@@ -56,7 +54,7 @@ namespace ElasticsearchWorker.ClusterApi
             }
         }
 
-        public ResultWrapper<T> BulkAddOrUpdate<T>(string index, string type, IEnumerable<T> body, Func<T, string> getId)
+        public ResultWrapper<T> BulkAddOrUpdate<T>(string index, string type, IEnumerable<T> body, Func<T, string> getId) where T : class
         {
             var dynamicBody = new List<object>();
 
@@ -67,33 +65,33 @@ namespace ElasticsearchWorker.ClusterApi
                     index = new { 
                         _id = id 
                     } 
-                });
+                }); 
                 dynamicBody.Add(item);
             }
 
 
 
-            var response = _clusterClient.BulkPut<T>(index, type, dynamicBody.ToArray());
+            var response = _clusterClient.BulkPut<T>(index, type, new PostData<object>(dynamicBody));
 
             return new ResultWrapper<T>
             {
-                ErrorMessage = response.ServerError == null ? null : response.ServerError.Error,
+                ErrorMessage = response.ServerError.Error.Reason == null ? null : response.ServerError.Error.Reason,
                 IsError =  response.HttpStatusCode != (int)HttpStatusCode.OK,
                 StatusCode = response.HttpStatusCode
             };
         } 
-        public ResultWrapper<T> AddOrUpdate<T>(string index, string type, string id,T body)
+        public ResultWrapper<T> AddOrUpdate<T>(string index, string type, string id,T body) where T : class
         {
-            var response = _clusterClient.Index<T>(index, type,id ,body);
+            var response = _clusterClient.Index<T>(index, type, id, new PostData<T>(body));
          
-            var result = Request<T, T>(response, (r) => response.Response);
+            var result = Request<T, T>(response, (r) => response.Body);
             return result;
         }
-        public ResultWrapper<T> GetItem<T>(string index, string type, string id)
+        public ResultWrapper<T> GetItem<T>(string index, string type, string id) where T : class
         {
             var response = _clusterClient.GetSource<T>(index, type, id);
             
-            var result = Request<T, T>(response, (r) => response.Response);
+            var result = Request<T, T>(response, (r) => response.Body);
             return result;
         }
 
@@ -109,7 +107,7 @@ namespace ElasticsearchWorker.ClusterApi
 
             if (response.ServerError != null)
             {
-                result.ErrorMessage = response.ServerError.Error;
+                result.ErrorMessage = response.ServerError.Error.Reason;
             }
             return result;
         }
