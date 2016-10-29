@@ -14,7 +14,7 @@ namespace ElasticsearchWorker.Discovery
     public class TcpRuntimeBridge
     {
         //Unique pipe name per instance
-        private int _port;
+       
         private readonly string _endpointName;
         private readonly TcpListener _server;
         public TcpRuntimeBridge(string endpointName)

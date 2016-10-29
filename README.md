@@ -31,7 +31,7 @@ Installation
 -------------------
 Install the NuGet package
 
-    Install-Package Elasticsearch-Azure-PAAS -Version 1.0.8-Beta -Pre
+    Install-Package Elasticsearch-Azure-PAAS 
 
 This package will add the required settings to any cloud service projects that refer to the Web or Worker Role the packaged was installed on. It also adds two folders called Config and Plugins. Please set the contents of these folders to always copy to output directory.
 

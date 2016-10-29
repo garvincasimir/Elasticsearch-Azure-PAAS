@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Elasticsearch-Azure-PAAS</id>
-    <version>5.0.0.2</version>
+    <version>5.0.0.1</version>
     <title>Elasticcsearch Azure PAAS</title>
     <authors>Garvin Casimir</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -27,8 +27,7 @@
   </metadata>
   <files>
     <file src="content\config\elasticsearch.yml" target="content\config\elasticsearch.yml" />
-    <file src="content\config\logging.yml" target="content\config\logging.yml" />
-    <file src="content\plugins\elasticsearch-azureruntime-0.0.3-SNAPSHOT.zip" target="content\plugins\elasticsearch-azureruntime-0.0.3-SNAPSHOT.zip" />
+    <file src="content\plugins\elasticsearch-azureruntime-5.0.0.1-SNAPSHOT.zip" target="content\plugins\elasticsearch-azureruntime-5.0.0.1-SNAPSHOT.zip" />
     <file src="lib\net45\ElasticsearchWorker.dll" target="lib\net45\ElasticsearchWorker.dll" />
     <file src="tools\templates\ServiceConfiguration.template.cscfg" target="tools\templates\ServiceConfiguration.template.cscfg" />
     <file src="tools\templates\ServiceDefinition.template.csdef" target="tools\templates\ServiceDefinition.template.csdef" />
