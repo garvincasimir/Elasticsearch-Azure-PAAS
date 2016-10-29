@@ -17,7 +17,7 @@ namespace ElasticsearchWorker.Core
         protected readonly ManualResetEvent _RunCompleteEvent = new ManualResetEvent(false);
         protected ElasticsearchManager _ElasticsearchManager;
         protected JavaManager _JavaManager;
-        protected PipesRuntimeBridge _Bridge;
+        protected TcpRuntimeBridge _Bridge;
         protected IElasticsearchServiceSettings _Settings;
         protected DataBootstrapService _BootstrapService;
 
@@ -28,7 +28,7 @@ namespace ElasticsearchWorker.Core
             var service = new ElasticsearchService()
             {
                 _Settings = settings,
-                _Bridge = new PipesRuntimeBridge(settings.EndpointName),
+                _Bridge = new TcpRuntimeBridge(settings.EndpointName),
                 _JavaManager = new JavaManager(settings),
                 _BootstrapService = new DataBootstrapService(settings)
             };
@@ -53,7 +53,7 @@ namespace ElasticsearchWorker.Core
                 dataPath = settings.DataDirectory;
             }
 
-            service._ElasticsearchManager = new ElasticsearchManager(settings, dataPath, service._Bridge.PipeName);
+            service._ElasticsearchManager = new ElasticsearchManager(settings, dataPath, service._Bridge.Port);
              
             if (!string.IsNullOrWhiteSpace(settings.ElasticsearchPluginContainer))
             {

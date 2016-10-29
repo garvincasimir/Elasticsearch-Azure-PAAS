@@ -25,7 +25,7 @@ namespace ElasticsearchWorker.Core
         protected string _PluginRoot;
         protected string _InstallRoot;
         protected string _DataPath;
-        protected string _BridgePipeName;
+        protected int _BridgePort;
         protected string _PackagePluginPath;
         protected string _TemplateConfigFile;
         protected string _TemplateLogConfigFile;
@@ -34,12 +34,12 @@ namespace ElasticsearchWorker.Core
         protected List<Func<IEnumerable<IWebArtifact>>> _sources = new List<Func<IEnumerable<IWebArtifact>>>();
         protected ConcurrentBag<string> _pluginArtifactPaths;
 
-        public ElasticsearchManager(IElasticsearchServiceSettings settings, string dataPath, string bridgeName)
+        public ElasticsearchManager(IElasticsearchServiceSettings settings, string dataPath, int bridgePort)
             : base(settings,settings.ElasticsearchInstaller)
         {
             _InstallRoot = settings.ElasticsearchDirectory;
             _DataPath = dataPath;
-            _BridgePipeName = bridgeName;
+            _BridgePort = bridgePort;
 
             //Maybe there is a less noisy way to do this? 
             if (!string.IsNullOrWhiteSpace(settings.ElasticsearchDownloadType) && settings.ElasticsearchDownloadType == "storage")
@@ -254,7 +254,7 @@ namespace ElasticsearchWorker.Core
                     _process.StartInfo.EnvironmentVariables["ES_JAVA_OPTS"] = string.Format("-Xms{0}m -Xmx{0}m", 250);
                 }
 
-                _process.StartInfo.EnvironmentVariables["BRIDGE_NAME"] = _BridgePipeName;
+                _process.StartInfo.EnvironmentVariables["BRIDGE_PORT"] = _BridgePort.ToString();
 
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
