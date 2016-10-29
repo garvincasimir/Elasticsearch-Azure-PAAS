@@ -6,8 +6,8 @@
       <Setting name="StorageConnection" value="UseDevelopmentStorage=true" />
       <Setting name="JavaInstallerName" value="jre-8u102-windows-x64.exe" />
       <Setting name="JavaDownloadURL" value="http://127.0.0.1:10000/devstoreaccount1/installers/jre-8u102-windows-x64.exe" />
-      <Setting name="ElasticsearchZip" value="elasticsearch-2.4.1.zip" />
-      <Setting name="ElasticsearchDownloadURL" value="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-2.4.1.zip" />
+      <Setting name="ElasticsearchZip" value="elasticsearch-5.0.0.zip" />
+      <Setting name="ElasticsearchDownloadURL" value="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0.zip" />
       <Setting name="ShareName" value="elasticdata" />
       <Setting name="ShareDrive" value="P:" />
       <Setting name="EndpointName" value="elasticsearch" />

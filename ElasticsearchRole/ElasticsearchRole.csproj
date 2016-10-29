@@ -92,7 +92,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Plugins\elasticsearch-azureruntime-2.4.1.2-SNAPSHOT.zip">
+    <None Include="Plugins\elasticsearch-azureruntime-5.0.0.1-SNAPSHOT.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
