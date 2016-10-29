@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
@@ -17,8 +18,8 @@ namespace ElasticsearchWorker.Core
     public class ElasticsearchManager : SoftwareManager
     {
         public const string ELASTICSEARCH_CONFIG_FILE = "elasticsearch.yml";
-        public const string ELASTICSEARCH_LOG_CONFIG_FILE = "logging.yml";
         public const string ELASTICSEARCH_PLUGIN_DIR = "plugins";
+        public const string JAVA_OPTIONS_FILE = "jvm.options";
 
         protected string _ElasticRoot;
         protected string _PluginRoot;
@@ -52,7 +53,7 @@ namespace ElasticsearchWorker.Core
 
             _PackagePluginPath = Path.Combine(settings.RootDirectory,"plugins");
             _TemplateConfigFile = Path.Combine(settings.RootDirectory,"config",ELASTICSEARCH_CONFIG_FILE);
-            _TemplateLogConfigFile = Path.Combine(settings.RootDirectory, "config", ELASTICSEARCH_LOG_CONFIG_FILE);
+          
 
             _ElasticRoot = Path.Combine(_InstallRoot, Path.GetFileNameWithoutExtension(_installer.Name));
             _PluginRoot = Path.Combine(_ElasticRoot, ELASTICSEARCH_PLUGIN_DIR);
@@ -76,9 +77,9 @@ namespace ElasticsearchWorker.Core
                 //Write elasticsearch.yaml
                 ConfigureElasticsearch();
 
-                //Write logging.yaml
-                ConfigureElastisearchLogging();
+                PatchJavaOptions();
 
+          
             });
 
             var mergedConfig = Task.WhenAll( elasticsearchSetup, DownloadAdditionalPlugins()).ContinueWith((t) =>
@@ -125,7 +126,7 @@ namespace ElasticsearchWorker.Core
                 if (yamlInput.Documents.Count > 0)
                 {
                     var mapping = (YamlMappingNode)yamlInput.Documents[0].RootNode;
-                    var reservedConfigs = new string[] { "path.data", "path.work", "path.logs", "path.plugins" };
+                    var reservedConfigs = new string[] { "path.data",  "path.logs" };
                     foreach (var entry in mapping.Children.Where(m => !reservedConfigs.Contains(m.Key.ToString())))
                     {
                         rootOutputNode.Add(entry.Key, entry.Value);
@@ -136,17 +137,25 @@ namespace ElasticsearchWorker.Core
                 //write important config values reglardless of what was provided in package
 
                 rootOutputNode.Add(new YamlScalarNode("path.data"), new YamlScalarNode(_DataPath));
-                rootOutputNode.Add(new YamlScalarNode("path.work"), new YamlScalarNode(_Settings.TempDirectory));
+                
                 rootOutputNode.Add(new YamlScalarNode("path.logs"), new YamlScalarNode(_Settings.LogDirectory));
-                rootOutputNode.Add(new YamlScalarNode("path.plugin"), new YamlScalarNode(_PluginRoot));
+   
                 rootOutputNode.Add(new YamlScalarNode("node.name"), new YamlScalarNode(_Settings.NodeName));
-                rootOutputNode.Add(new YamlScalarNode("cloud.azureruntime.bridge"), new YamlScalarNode(_BridgePipeName));
+               
 
                 yamlOutput.Save(output);
                 Trace.TraceInformation("Saved elasticsearch config file {0}", configFile);
 
             }
 
+        }
+
+        protected virtual void PatchJavaOptions()
+        {
+            string javaOptions = Path.Combine(_ElasticRoot, "Config", JAVA_OPTIONS_FILE);
+            var text = File.ReadAllText(javaOptions);
+            text = Regex.Replace(text, "-Xm[sx]", "# $0");
+            File.WriteAllText(javaOptions, text);
         }
 
         protected virtual void ConfigurePackagePlugins()
@@ -159,12 +168,7 @@ namespace ElasticsearchWorker.Core
 
         }
 
-        protected virtual void ConfigureElastisearchLogging()
-        {
-            string configFile = Path.Combine(_ElasticRoot, "Config", ELASTICSEARCH_LOG_CONFIG_FILE);
-            File.Copy(_TemplateLogConfigFile, configFile,true);
-            Trace.TraceInformation("Created logging config {0}", configFile);
-        }
+
 
         public virtual void AddPluginSource(string containerName, CloudStorageAccount account)
         {
@@ -243,8 +247,14 @@ namespace ElasticsearchWorker.Core
 
                 if(_Settings.ComputedHeapSize > 0 && !_Settings.IsEmulated)
                 {
-                    _process.StartInfo.EnvironmentVariables["ES_HEAP_SIZE"] = string.Format("{0}m", _Settings.ComputedHeapSize);
+                    _process.StartInfo.EnvironmentVariables["ES_JAVA_OPTS"] = string.Format("-Xms{0}m -Xmx{0}m", _Settings.ComputedHeapSize);
                 }
+                else if (_Settings.IsEmulated)
+                {
+                    _process.StartInfo.EnvironmentVariables["ES_JAVA_OPTS"] = string.Format("-Xms{0}m -Xmx{0}m", 250);
+                }
+
+                _process.StartInfo.EnvironmentVariables["BRIDGE_NAME"] = _BridgePipeName;
 
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
