@@ -15,6 +15,7 @@
       <Setting name="UseElasticLocalDataFolder" value="true" />
       <Setting name="ElasticsearchPluginContainer" value="elasticsearchplugins" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="NamedPlugins" value="mapper-size|ingest-geoip|ingest-attachment" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

@@ -28,6 +28,7 @@
       <Setting name="UseElasticLocalDataFolder" />
       <Setting name="ElasticsearchPluginContainer" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="NamedPlugins" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

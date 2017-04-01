@@ -1,4 +1,6 @@
-﻿namespace ElasticsearchWorker.Core
+﻿using System.Collections.Generic;
+
+namespace ElasticsearchWorker.Core
 {
     public interface IElasticsearchServiceSettings
     {
@@ -26,6 +28,7 @@
         int ComputedHeapSize { get; }
         bool EnableDataBootstrap { get; }
         string DataBootstrapDirectory { get; }
+        IEnumerable<string> NamedPlugins { get; }
         string GetExtra(string key);
 
     }

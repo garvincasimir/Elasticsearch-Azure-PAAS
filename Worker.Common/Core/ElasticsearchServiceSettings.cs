@@ -2,9 +2,11 @@
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using System.Linq;
 
 namespace ElasticsearchWorker.Core
 {
@@ -33,6 +35,7 @@ namespace ElasticsearchWorker.Core
         protected string _ElasticsearchDirectory;
         protected string _RootDirectory;
         protected string _TempDirectory;
+        protected IEnumerable<string> _NamedPlugins;
         protected bool _IsAzure;
         protected bool _IsEmulated;
         protected int _ComputedHeapSize;
@@ -77,6 +80,16 @@ namespace ElasticsearchWorker.Core
                 settings._EnableDataBootstrap = false;
             }
 
+            var namedPlugins = CloudConfigurationManager.GetSetting("NamedPlugins");
+            if (!string.IsNullOrWhiteSpace(namedPlugins))
+            {
+                settings._NamedPlugins = namedPlugins.Split('|').Where(p => !string.IsNullOrWhiteSpace(p));
+            }
+            else
+            {
+                settings._NamedPlugins = new string[0];
+            }
+            
 
             if (!settings._RootDirectory.EndsWith(@"\"))
             {
@@ -138,6 +151,7 @@ namespace ElasticsearchWorker.Core
         public int ComputedHeapSize { get { return _ComputedHeapSize; } }
         public bool EnableDataBootstrap { get { return _EnableDataBootstrap;  } }
         public string DataBootstrapDirectory { get { return _DataBootstrapDirectory; } }
+        public IEnumerable<string> NamedPlugins { get { return _NamedPlugins; } }
         public string GetExtra(string key)
         {
             return CloudConfigurationManager.GetSetting(key);

@@ -68,6 +68,7 @@ namespace ElasticsearchWorker.Core
         {
             try
             {
+                
 
                 var configTasks = new Task[] 
                 { 
@@ -78,14 +79,18 @@ namespace ElasticsearchWorker.Core
                 Trace.TraceInformation("Attempting to configure node: {0}", _Settings.NodeName);
                 Task.WaitAll(configTasks, _CancellationTokenSource.Token);
 
+                //Java installed get java home path
+                var javaHome = _JavaManager.GetJavaHomeFromReg();
+               
+                //Install Named plugins (Not Recommended: External dependency)
+                _ElasticsearchManager.InstallNamedPlugins(_CancellationTokenSource.Token,javaHome);
+
                 //Start discovery helper (non blocking)
                 _Bridge.StartService();
 
                 //Bootstrap data if configured (non blocking)
                 _BootstrapService.StartService();
-
-
-                var javaHome = _JavaManager.GetJavaHomeFromReg();
+                
                 Trace.TraceInformation("Attempting to start elasticsearch as node: {0} with JAVA_HOME = {1}", _Settings.NodeName, javaHome);
                 _ElasticsearchManager.StartAndBlock(_CancellationTokenSource.Token, javaHome);
             }

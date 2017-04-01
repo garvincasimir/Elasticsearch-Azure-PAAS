@@ -317,5 +317,52 @@ namespace ElasticsearchWorker.Core
                 Trace.TraceInformation("Extracted plugin {0}", pluginFileName);
             });
         }
+
+        public virtual void InstallNamedPlugins(CancellationToken token,string javaHome)
+        {
+            string pluginInstaller = Path.Combine(_ElasticRoot, "bin", "elasticsearch-plugin.bat");
+
+            Parallel.ForEach(_Settings.NamedPlugins, p =>
+            {
+                 var pluginInstall = new Process();
+                 pluginInstall.StartInfo = new ProcessStartInfo
+                 {
+                     FileName = pluginInstaller,
+                     UseShellExecute = false,
+                     RedirectStandardOutput = true,
+                     RedirectStandardError = true,
+                     Arguments = p,
+
+                 };
+
+                 pluginInstall.StartInfo.EnvironmentVariables["JAVA_HOME"] = javaHome;
+                 pluginInstall.Start();
+                 pluginInstall.BeginOutputReadLine();
+
+
+                 pluginInstall.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+                 {
+                     Trace.TraceInformation(e.Data);
+                 };
+
+                 var installEnded = new ManualResetEvent(false);
+
+                 installEnded.SafeWaitHandle = new SafeWaitHandle(pluginInstall.Handle, false);
+
+                 int index = WaitHandle.WaitAny(new[] { installEnded, token.WaitHandle });
+                 Trace.TraceInformation("Process handle signaled Installing Named Plugin '{0}' : {1} " ,p, index);
+
+                 //If the signal came from the the window
+                 if (index == 0 && pluginInstall.ExitCode != 0)
+                 {
+                     var errors = pluginInstall.StandardError.ReadToEnd();
+                     
+                     //Can't recover from plugin install failure
+                     throw new Exception(string.Format("Error in plugin Installer '{0}' error output: \n{1} ", p, errors));
+                 }
+           });
+
+        }
+
     }
 }

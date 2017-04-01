@@ -42,67 +42,74 @@ Settings
 -------------------
 There are a couple config steps before you can run it either in the Azure Emulator or in an Azure Cloud Service. The NuGet package has already added those settings with defaults from this project. Please change them where necessary.
 
-######JavaDownloadURL
+###### JavaDownloadURL
 The service will download the java jre installer from this url.
 
 **Default**: http://127.0.0.1:10000/devstoreaccount1/installers/jre-8u40-windows-x64.exe
 
-######JavaDownloadType
+###### JavaDownloadType
 This tells the service whether **JavaDownloadURL** is a web accessible location or on the configured storage account
 
 **Default**: storage
 **Options**: web, storage
 
-######JavaInstallerName
+###### JavaInstallerName
 This is simply the name used to save the jre installer into the download cache on the role instance
 
 **Default**: jre-8u40-windows-x64.exe
 
-######ElasticsearchDownloadURL
+###### ElasticsearchDownloadURL
 The service will download the java jre installer from this url.
 
 **Default**: https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-5.0.0.zip
 
-######ElasticsearchDownloadType
+###### ElasticsearchDownloadType
 This tells the service whether **ElasticsearchDownloadURL** is a web accessible location or on the configured storage account
 
 **Default**: storage
 **Options**: web, storage
 
-######ElasticsearchZip
+###### ElasticsearchZip
 This is simply the name used to save the elasticsearch package into the download cache on the role instance
 
 **Default**: elasticsearch-5.0.0.zip
 
-######StorageConnection
+###### StorageConnection
 The service will use this connection string to download any download types marked as *storage*. It will also be used to create the share used to store elasticsearch data.
 
 **Default**: UseDevelopmentStorage=true
 
-######ShareName
+###### ShareName
 This config value will be used the name of the azure file service share. https://myaccount.file.core.windows.net/[ShareName]. This share will be used as a persistent store for elasticsearch data and snapshots.
 
 **Default**: elasticdata
 
-######ShareDrive
+###### ShareDrive
 This is the drive letter assined to the azure file service share on the role instance
 
 **Default**: P:
 
-######EndpointName
+###### EndpointName
 This is the name of the endpoint which elasticsearch nodes in the cluster will use to communicate which each other
 
 **Default**: elasticsearch
 
-######UseElasticLocalDataFolder
+###### UseElasticLocalDataFolder
 If this option is enabled, the service will store data on the role instance rather than on the azure file service share. This might be handy when you need the maxium i/o speed and your data is easily replaceable. This is the only available option when using the emulator.
 
 **Default**: true
 
-######ElasticsearchPluginContainer
+###### ElasticsearchPluginContainer
 This is the name of a container accessible through the storage account in the **StorageConnection** setting which contains plugin zip files you intend to install in your cluster.
 
 **Default**: elasticsearchplugins
+
+###### NamedPlugins
+This is a pipe separated list of plugins. They will be installed using the built in plugin installer.
+    /bin/elasticsearch-plugin.bat plugin-name
+
+**Sample**: analysis-phonetic|analysis-phonetic|analysis-phonetic
+
 
 Usage
 ------------------------
