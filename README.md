@@ -106,9 +106,10 @@ This is the name of a container accessible through the storage account in the **
 
 ###### NamedPlugins
 This is a pipe separated list of plugins. They will be installed using the built in plugin installer.
-    /bin/elasticsearch-plugin.bat plugin-name
+    
+	/bin/elasticsearch-plugin.bat install plugin-name
 
-**Sample**: analysis-phonetic|analysis-phonetic|analysis-phonetic
+**Sample**: analysis-stempel|analysis-phonetic|analysis-smartcn
 
 
 Usage
