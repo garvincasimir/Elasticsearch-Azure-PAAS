@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Elasticsearch-Azure-PAAS</id>
-    <version>5.0.0.1</version>
+    <version>5.3.0.0</version>
     <title>Elasticcsearch Azure PAAS</title>
     <authors>Garvin Casimir</authors>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
