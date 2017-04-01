@@ -25,7 +25,6 @@ namespace ElasticsearchWorker.Core
         protected string _PluginRoot;
         protected string _InstallRoot;
         protected string _DataPath;
-        protected int _BridgePort;
         protected string _PackagePluginPath;
         protected string _TemplateConfigFile;
         protected string _TemplateLogConfigFile;
@@ -34,12 +33,12 @@ namespace ElasticsearchWorker.Core
         protected List<Func<IEnumerable<IWebArtifact>>> _sources = new List<Func<IEnumerable<IWebArtifact>>>();
         protected ConcurrentBag<string> _pluginArtifactPaths;
 
-        public ElasticsearchManager(IElasticsearchServiceSettings settings, string dataPath, int bridgePort)
+        public ElasticsearchManager(IElasticsearchServiceSettings settings, string dataPath)
             : base(settings,settings.ElasticsearchInstaller)
         {
             _InstallRoot = settings.ElasticsearchDirectory;
             _DataPath = dataPath;
-            _BridgePort = bridgePort;
+        
 
             //Maybe there is a less noisy way to do this? 
             if (!string.IsNullOrWhiteSpace(settings.ElasticsearchDownloadType) && settings.ElasticsearchDownloadType == "storage")
@@ -141,7 +140,12 @@ namespace ElasticsearchWorker.Core
                 rootOutputNode.Add(new YamlScalarNode("path.logs"), new YamlScalarNode(_Settings.LogDirectory));
    
                 rootOutputNode.Add(new YamlScalarNode("node.name"), new YamlScalarNode(_Settings.NodeName));
-               
+
+                rootOutputNode.Add(new YamlScalarNode("transport.host"), new YamlScalarNode(_Settings.CurrentTransportHost));
+
+                var ipNodes = _Settings.ClusterNodes.Select(n => new YamlScalarNode(n));
+
+                rootOutputNode.Add(new YamlScalarNode("discovery.zen.ping.unicast.hosts"), new YamlSequenceNode(ipNodes));
 
                 yamlOutput.Save(output);
                 Trace.TraceInformation("Saved elasticsearch config file {0}", configFile);
@@ -254,8 +258,6 @@ namespace ElasticsearchWorker.Core
                     _process.StartInfo.EnvironmentVariables["ES_JAVA_OPTS"] = string.Format("-Xms{0}m -Xmx{0}m", 250);
                 }
 
-                _process.StartInfo.EnvironmentVariables["BRIDGE_PORT"] = _BridgePort.ToString();
-
                 _process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                 {
                     Trace.TraceInformation(e.Data);
@@ -331,7 +333,7 @@ namespace ElasticsearchWorker.Core
                      UseShellExecute = false,
                      RedirectStandardOutput = true,
                      RedirectStandardError = true,
-                     Arguments = p,
+                     Arguments = "install " + p,
 
                  };
 

@@ -1,3 +1,1 @@
 cluster.name: Elasticsearch
-discovery:
-    type: azureruntime

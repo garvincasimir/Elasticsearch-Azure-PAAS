@@ -29,6 +29,8 @@ namespace ElasticsearchWorker.Core
         bool EnableDataBootstrap { get; }
         string DataBootstrapDirectory { get; }
         IEnumerable<string> NamedPlugins { get; }
+        IEnumerable<string> ClusterNodes { get; }
+        string CurrentTransportHost { get; }
         string GetExtra(string key);
 
     }

@@ -1,5 +1,4 @@
 ﻿using ElasticsearchWorker.Data;
-using ElasticsearchWorker.Discovery;
 using RedDog.Storage.Files;
 using System;
 using System.Diagnostics;
@@ -17,7 +16,6 @@ namespace ElasticsearchWorker.Core
         protected readonly ManualResetEvent _RunCompleteEvent = new ManualResetEvent(false);
         protected ElasticsearchManager _ElasticsearchManager;
         protected JavaManager _JavaManager;
-        protected TcpRuntimeBridge _Bridge;
         protected IElasticsearchServiceSettings _Settings;
         protected DataBootstrapService _BootstrapService;
 
@@ -28,7 +26,6 @@ namespace ElasticsearchWorker.Core
             var service = new ElasticsearchService()
             {
                 _Settings = settings,
-                _Bridge = new TcpRuntimeBridge(settings.EndpointName),
                 _JavaManager = new JavaManager(settings),
                 _BootstrapService = new DataBootstrapService(settings)
             };
@@ -53,7 +50,7 @@ namespace ElasticsearchWorker.Core
                 dataPath = settings.DataDirectory;
             }
 
-            service._ElasticsearchManager = new ElasticsearchManager(settings, dataPath, service._Bridge.Port);
+            service._ElasticsearchManager = new ElasticsearchManager(settings, dataPath);
              
             if (!string.IsNullOrWhiteSpace(settings.ElasticsearchPluginContainer))
             {
@@ -84,9 +81,6 @@ namespace ElasticsearchWorker.Core
                
                 //Install Named plugins (Not Recommended: External dependency)
                 _ElasticsearchManager.InstallNamedPlugins(_CancellationTokenSource.Token,javaHome);
-
-                //Start discovery helper (non blocking)
-                _Bridge.StartService();
 
                 //Bootstrap data if configured (non blocking)
                 _BootstrapService.StartService();

@@ -36,11 +36,13 @@ namespace ElasticsearchWorker.Core
         protected string _RootDirectory;
         protected string _TempDirectory;
         protected IEnumerable<string> _NamedPlugins;
+        protected IEnumerable<string> _ClusterNodes;
         protected bool _IsAzure;
         protected bool _IsEmulated;
         protected int _ComputedHeapSize;
         protected bool _EnableDataBootstrap;
         protected string _DataBootstrapDirectory;
+        protected string _CurrentTransportHost;
 
         /// <summary>
         /// Init with a storage account
@@ -89,7 +91,20 @@ namespace ElasticsearchWorker.Core
             {
                 settings._NamedPlugins = new string[0];
             }
-            
+
+            //New nodes will add themselves into the cluster. Ok to make this static and remove discovery plugin.
+            settings._ClusterNodes = from r in RoleEnvironment.Roles
+                                     from i in r.Value.Instances
+                                     from e in i.InstanceEndpoints
+                                     where e.Key == settings.EndpointName && i.Id != RoleEnvironment.CurrentRoleInstance.Id
+                                     select string.Format("{0}:{1}", e.Value.IPEndpoint.Address, e.Value.IPEndpoint.Port);
+
+
+            settings._CurrentTransportHost = (from r in RoleEnvironment.Roles
+                                              from i in r.Value.Instances
+                                              from e in i.InstanceEndpoints
+                                              where e.Key == settings.EndpointName && i.Id == RoleEnvironment.CurrentRoleInstance.Id
+                                              select string.Format("{0}", e.Value.IPEndpoint.Address)).First();
 
             if (!settings._RootDirectory.EndsWith(@"\"))
             {
@@ -152,6 +167,8 @@ namespace ElasticsearchWorker.Core
         public bool EnableDataBootstrap { get { return _EnableDataBootstrap;  } }
         public string DataBootstrapDirectory { get { return _DataBootstrapDirectory; } }
         public IEnumerable<string> NamedPlugins { get { return _NamedPlugins; } }
+        public IEnumerable<string> ClusterNodes { get { return _ClusterNodes; } }
+        public string CurrentTransportHost { get { return _CurrentTransportHost; } }
         public string GetExtra(string key)
         {
             return CloudConfigurationManager.GetSetting(key);

@@ -44,7 +44,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="content\config\elasticsearch.yml" />
-    <None Include="content\plugins\elasticsearch-azureruntime-5.0.0.1-SNAPSHOT.zip" />
     <None Include="Elasticsearch-Azure-PAAS.nuspec">
       <SubType>Designer</SubType>
     </None>
