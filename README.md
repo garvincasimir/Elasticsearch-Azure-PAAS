@@ -163,10 +163,6 @@ If you find things a bit sluggish on startup in the emulator don't be alarmed. T
 
 ![Project Running](https://garvincasimir.files.wordpress.com/2014/11/elasticsearch-azure-paas-running1.png "Running in Emulator with Fiddler for test")
 
-The Discovery Plugin
------------------------
-The discovery plugin gets information about the role instances from the webrole using named pipes. I would have used the java azure sdk Runtime api but the named pipe it depends on is only available when using the ProgramEntryPoint option. The code can be viewed in the [Elasticsearch-Azure-PAAS-Plugin](https://github.com/garvincasimir/Elasticsearch-Azure-PAAS-Plugin) repository. There is some cleaning to be done.
-
 NuGet Package Source
 -----------------------
 The source of the NuGet package used to install this project on Web and Worker Roles is the Package.NuGet project located in this repository.
