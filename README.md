@@ -80,17 +80,17 @@ The service will use this connection string to download any download types marke
 **Default**: UseDevelopmentStorage=true
 
 ###### ShareName
-This config value will be used the name of the azure file service share. https://myaccount.file.core.windows.net/[ShareName]. This share will be used as a persistent store for elasticsearch data and snapshots.
+This config value will be used to name the azure file service share. https://myaccount.file.core.windows.net/[ShareName]. This share will be used as a persistent store for elasticsearch data and snapshots.
 
 **Default**: elasticdata
 
 ###### ShareDrive
-This is the drive letter assined to the azure file service share on the role instance
+This is the drive letter assigned to the azure file service share on the role instance
 
 **Default**: P:
 
 ###### EndpointName
-This is the name of the endpoint which elasticsearch nodes in the cluster will use to communicate which each other
+This is the name of the endpoint elasticsearch nodes in the cluster will use to communicate which each other
 
 **Default**: elasticsearch
 
