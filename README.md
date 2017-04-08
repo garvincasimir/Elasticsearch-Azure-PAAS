@@ -8,11 +8,11 @@ This is a Visual Studio project for creating an [Elasticsearch](https://www.elas
 
 Who is this for?
 ---------------------------
-This is for people who want to run Elastic search on Azure in the Platform as a Service enviroment. This is also an opportunity to test Elasticsearch in a simulated distributed environment.
+This is for people who want to run Elastic search on Azure in the Platform as a Service environment. This is also an opportunity to test Elasticsearch in a simulated distributed environment.
 
 How does this work?
 ----------------------
-This is a visual studio project which can serve as a base for a solution based on an Elasticsearch cluster. The intent is to handle all the different aspecs of setting up and managing a cluster
+This is a visual studio project which can serve as a base for a solution based on an Elasticsearch cluster. The intent is to handle all the different aspects of setting up and managing a cluster
 * Installation
 * Configuration
 * Plugin Setup
@@ -21,7 +21,7 @@ This is a visual studio project which can serve as a base for a solution based o
 * Automatic Node Discovery
 * Security
 
-Typcial usage involves installing the NuGet package on existing Web or Worker role in your visual studio project. Once the package is installed you update the configuration settings and include the service initializer in your WorkerRole.cs or WebRole.cs.
+Typical usage involves installing the NuGet package on existing Web or Worker role in your visual studio project. Once the package is installed you update the configuration settings and include the service initializer in your WorkerRole.cs or WebRole.cs.
 
 Do I need an Azure Account to try this?
 ---------------------------------------
